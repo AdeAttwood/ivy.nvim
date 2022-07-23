@@ -19,15 +19,19 @@ end
 
 controller.input = function(char)
   prompt.input(char)
-  vim.schedule(function()
-    window.set_items(controller.items(prompt.text()))
-  end)
+  controller.update(prompt.text())
 end
 
 controller.search = function(value)
   prompt.set(value)
+  controller.update(prompt.text())
+end
+
+controller.update = function(text)
   vim.schedule(function()
-    window.set_items(controller.items(prompt.text()))
+    window.set_items(controller.items(text))
+    vim.cmd("syntax clear IvyMatch")
+    vim.cmd("syntax match IvyMatch '[(" .. text .. ")]'")
   end)
 end
 
