@@ -44,7 +44,7 @@ A command can be run that will launch the completion UI
 | ---------- | ----------- | ------------------------------------------------------ |
 | IvyFd      | \<leader\>p | Find files in your project with the fd cli file finder |
 | IvyAg      | \<leader\>/ | Find content in files using the silver searcher        |
-| IvyBuffers |             | Search though open buffers                             |
+| IvyBuffers | \<leader\>b | Search though open buffers                             |
 
 ### Actions
 
