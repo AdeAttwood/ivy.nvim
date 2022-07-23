@@ -9,6 +9,6 @@ struct Match {
   std::string content;
 };
 
-static bool sort_match(const Match& a, const Match& b) { return a.score > b.score; }
+static bool sort_match(const Match& a, const Match& b) { return a.score < b.score; }
 
 }  // namespace ivy
