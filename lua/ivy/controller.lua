@@ -37,7 +37,7 @@ controller.complete = function()
 end
 
 controller.checkpoint = function()
-  vim.api.nvim_set_current_win(window.previous)
+  vim.api.nvim_set_current_win(window.origin)
   controller.callback(window.get_current_selection())
   vim.api.nvim_set_current_win(window.window)
 end
@@ -50,6 +50,10 @@ end
 controller.previous = function()
   window.index = window.index - 1
   window.update()
+end
+
+controller.origin = function()
+  return vim.api.nvim_win_get_buf(window.origin)
 end
 
 controller.destroy = function()

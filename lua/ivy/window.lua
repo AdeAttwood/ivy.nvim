@@ -38,7 +38,7 @@ end
 local window = {}
 
 window.index = 0
-window.previous = nil
+window.origin = nil
 window.window = nil
 window.buffer = nil
 
@@ -47,7 +47,7 @@ window.initialize = function()
 end
 
 window.make_buffer = function()
-  window.previous = vim.api.nvim_get_current_win()
+  window.origin = vim.api.nvim_get_current_win()
 
   vim.api.nvim_command "botright split new"
   window.buffer = vim.api.nvim_win_get_buf(0)
@@ -135,7 +135,7 @@ window.destroy = function()
 
   window.buffer = nil
   window.window = nil
-  window.previous = nil
+  window.origin = nil
   window.index = 0
 end
 
