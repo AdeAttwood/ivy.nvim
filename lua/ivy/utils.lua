@@ -54,4 +54,11 @@ utils.file_action = function()
   end
 end
 
+utils.line_action = function()
+  return function(item)
+    local line = item:match "^%s+(%d+):"
+    vim.cmd(line)
+  end
+end
+
 return utils

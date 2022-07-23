@@ -42,6 +42,28 @@ vim.api.nvim_create_user_command("IvyBuffers", function()
   end, utils.file_action())
 end, { bang = true, desc = "List all of the current open buffers" })
 
+vim.api.nvim_create_user_command("IvyLines", function()
+  vim.ivy.run("Lines", function(input)
+    local list = {}
+
+    local lines = vim.api.nvim_buf_get_lines(vim.ivy.origin(), 0, -1, false)
+    for index = 1, #lines do
+      local line = lines[index]
+      local score = libivy.ivy_match(input, line)
+      if score > -200 then
+        local prefix = string.rep(" ", 4 - #tostring(index)) .. index .. ": "
+        table.insert(list, { score, prefix .. line })
+      end
+    end
+
+    table.sort(list, function(a, b)
+      return a[1] < b[1]
+    end)
+
+    return list
+  end, utils.line_action())
+end, { bang = true, desc = "List all of the current open buffers" })
+
 vim.api.nvim_set_keymap("n", "<leader>b", "<cmd>IvyBuffers<CR>", { nowait = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>p", "<cmd>IvyFd<CR>", { nowait = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>/", "<cmd>IvyAg<CR>", { nowait = true, silent = true })
