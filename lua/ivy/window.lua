@@ -12,7 +12,7 @@ local chars = {
     "[", "]", " ",
 }
 
-local function parse_lines(lines)
+local function string_to_table(lines)
   local items = {}
   for line in lines:gmatch "[^\r\n]+" do
     table.insert(items, line)
@@ -21,8 +21,18 @@ local function parse_lines(lines)
   return items
 end
 
-local function parse_array(arr)
-  return arr
+local function set_items_string(buffer, lines)
+  vim.api.nvim_buf_set_lines(buffer, 0, 9999, false, string_to_table(lines))
+end
+
+local function set_items_array(buffer, lines)
+  if type(lines[1]) == "string" then
+    vim.api.nvim_buf_set_lines(buffer, 0, 9999, false, lines)
+  else
+    for i = 1, #lines do
+      vim.api.nvim_buf_set_lines(buffer, i - 1, 9999, false, { lines[i][2] })
+    end
+  end
 end
 
 local window = {}
@@ -100,28 +110,21 @@ window.update = function()
 end
 
 window.set_items = function(items)
-  local lines = {}
-
-  if type(items) == "string" then
-    lines = parse_lines(items)
+  if #items == 0 then
+    vim.api.nvim_buf_set_lines(window.get_buffer(), 0, 9999, false, { "-- No Items --" })
+  elseif type(items) == "string" then
+    set_items_string(window.get_buffer(), items)
   elseif type(items) == "table" then
-    lines = parse_array(items)
+    set_items_array(window.get_buffer(), items)
   end
 
-  if #lines == 0 then
-    lines = { "-- No Items --" }
-  end
-
-  vim.api.nvim_buf_set_lines(window.get_buffer(), 0, 9999, false, lines)
-
-  local line_count = #lines
-  window.index = 0
-
+  local line_count = vim.api.nvim_buf_line_count(window.buffer)
+  window.index = line_count - 1
   if line_count > 10 then
     line_count = 10
   end
-  vim.api.nvim_win_set_height(window.window, line_count)
 
+  vim.api.nvim_win_set_height(window.window, line_count)
   window.update()
 end
 

@@ -1,0 +1,20 @@
+Checks: '
+-*,
+google-*,
+-google-runtime-references,
+-google-readability-avoid-underscore-in-googletest-name,
+llvm-include-order,
+llvm-namespace-comment,
+misc-throw-by-value-catch-by-reference,
+modernize*,
+-modernize-use-trailing-return-type,
+readability-container-size-empty,
+'
+
+WarningsAsErrors: '*'
+
+HeaderFilterRegex: './src/**/*'
+
+CheckOptions:
+- key:             google-readability-braces-around-statements.ShortStatementLines
+  value:           '3'

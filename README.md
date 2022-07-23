@@ -19,6 +19,21 @@ git clone https://github.com/AdeAttwood/ivy.nvim ~/.config/nvim/pack/bundle/star
 
 TODO: Add docs in the plugin managers I don't use any
 
+### Compiling
+
+For the native searching, you will need to compile the shard library. You can
+do that by running the below command in the root of the plugin.
+
+```sh
+cmake -DCMAKE_BUILD_TYPE=Release -B build/Release && (cd build/Release; make -j)
+```
+
+If you are missing build dependencies, you can install them via apt.
+
+```sh
+sudo apt-get install build-essential pkg-config cmake
+```
+
 ## Features
 
 ### Commands

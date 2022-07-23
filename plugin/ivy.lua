@@ -1,5 +1,6 @@
 local controller = require "ivy.controller"
 local utils = require "ivy.utils"
+local libivy = require "ivy.libivy"
 
 -- Put the controller in to the vim global so we can access it in mappings
 -- better without requires. You can call controller commands like `vim.ivy.xxx`.
@@ -10,7 +11,9 @@ vim.api.nvim_create_user_command("IvyAg", function()
 end, { bang = true, desc = "Run ag to search for content in files" })
 
 vim.api.nvim_create_user_command("IvyFd", function()
-  vim.ivy.run(utils.command_finder("fd --hidden --type f --exclude .git", 0), utils.file_action())
+  vim.ivy.run(function(term)
+    return libivy.ivy_files(term, vim.fn.getcwd())
+  end, utils.file_action())
 end, { bang = true, desc = "Find files in the project" })
 
 vim.api.nvim_create_user_command("IvyBuffers", function()
