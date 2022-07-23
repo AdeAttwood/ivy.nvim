@@ -6,12 +6,13 @@ local controller = {}
 controller.items = nil
 controller.callback = nil
 
-controller.run = function(items, callback)
+controller.run = function(name, items, callback)
   controller.callback = callback
   controller.items = items
 
   window.initialize()
   window.set_items { "-- Loading ---" }
+  vim.api.nvim_buf_set_name(window.get_buffer(), name)
 
   controller.input ""
 end

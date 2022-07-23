@@ -7,17 +7,17 @@ local libivy = require "ivy.libivy"
 vim.ivy = controller
 
 vim.api.nvim_create_user_command("IvyAg", function()
-  vim.ivy.run(utils.command_finder "ag", utils.vimgrep_action())
+  vim.ivy.run("AG", utils.command_finder "ag", utils.vimgrep_action())
 end, { bang = true, desc = "Run ag to search for content in files" })
 
 vim.api.nvim_create_user_command("IvyFd", function()
-  vim.ivy.run(function(term)
+  vim.ivy.run("Files", function(term)
     return libivy.ivy_files(term, vim.fn.getcwd())
   end, utils.file_action())
 end, { bang = true, desc = "Find files in the project" })
 
 vim.api.nvim_create_user_command("IvyBuffers", function()
-  vim.ivy.run(function(input)
+  vim.ivy.run("Buffers", function(input)
     local list = {}
     local buffers = vim.api.nvim_list_bufs()
     for index = 1, #buffers do
