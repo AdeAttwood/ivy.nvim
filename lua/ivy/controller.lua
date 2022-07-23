@@ -11,17 +11,23 @@ controller.run = function(items, callback)
   controller.items = items
 
   window.initialize()
+  window.set_items { "-- Loading ---" }
+
   controller.input ""
 end
 
 controller.input = function(char)
   prompt.input(char)
-  window.set_items(controller.items(prompt.text()))
+  vim.schedule(function()
+    window.set_items(controller.items(prompt.text()))
+  end)
 end
 
 controller.search = function(value)
   prompt.set(value)
-  window.set_items(controller.items(prompt.text()))
+  vim.schedule(function()
+    window.set_items(controller.items(prompt.text()))
+  end)
 end
 
 controller.complete = function()
