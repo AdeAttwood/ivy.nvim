@@ -72,7 +72,7 @@ window.make_buffer = function()
   end
 
   vim.api.nvim_buf_set_keymap(window.buffer, "n", "<C-c>", "<cmd>lua vim.ivy.destroy()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(window.buffer, "n", "<C-w>", "<cmd>lua vim.ivy.search('')<CR>", opts)
+  vim.api.nvim_buf_set_keymap(window.buffer, "n", "<C-u>", "<cmd>lua vim.ivy.search('')<CR>", opts)
   vim.api.nvim_buf_set_keymap(window.buffer, "n", "<C-n>", "<cmd>lua vim.ivy.next()<CR>", opts)
   vim.api.nvim_buf_set_keymap(window.buffer, "n", "<C-p>", "<cmd>lua vim.ivy.previous()<CR>", opts)
   vim.api.nvim_buf_set_keymap(window.buffer, "n", "<C-M-n>", "<cmd>lua vim.ivy.next(); vim.ivy.checkpoint()<CR>", opts)
@@ -85,6 +85,9 @@ window.make_buffer = function()
   )
   vim.api.nvim_buf_set_keymap(window.buffer, "n", "<CR>", "<cmd>lua vim.ivy.complete()<CR>", opts)
   vim.api.nvim_buf_set_keymap(window.buffer, "n", "<BS>", "<cmd>lua vim.ivy.input('BACKSPACE')<CR>", opts)
+  vim.api.nvim_buf_set_keymap(window.buffer, "n", "<Left>", "<cmd>lua vim.ivy.input('LEFT')<CR>", opts)
+  vim.api.nvim_buf_set_keymap(window.buffer, "n", "<Right>", "<cmd>lua vim.ivy.input('RIGHT')<CR>", opts)
+  vim.api.nvim_buf_set_keymap(window.buffer, "n", "<C-w>", "<cmd>lua vim.ivy.input('DELETE_WORD')<CR>", opts)
 end
 
 window.get_current_selection = function()
