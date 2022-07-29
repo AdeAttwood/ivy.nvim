@@ -108,7 +108,6 @@ window.get_buffer = function()
 end
 
 window.update = function()
-  -- TODO(ade): Add a guard in so we can not go out of range on the results buffer
   vim.api.nvim_win_set_cursor(window.window, { window.index + 1, 0 })
 end
 

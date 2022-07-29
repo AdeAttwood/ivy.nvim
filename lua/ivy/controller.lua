@@ -47,11 +47,20 @@ controller.checkpoint = function()
 end
 
 controller.next = function()
+  local max = vim.api.nvim_buf_line_count(window.buffer) - 1
+  if window.index == max then
+    return
+  end
+
   window.index = window.index + 1
   window.update()
 end
 
 controller.previous = function()
+  if window.index == 0 then
+    return
+  end
+
   window.index = window.index - 1
   window.update()
 end
