@@ -19,6 +19,22 @@ jobs:
         with:
           args: conventional-tools commitlint -l1
 
+  luacheck:
+    name: Luacheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install luarocks
+        run: sudo apt update && sudo apt install -y luarocks
+
+      - name: Install luacheck
+        run: sudo luarocks install luacheck
+
+      - name: Run luacheck
+        run: luacheck .
+
   test:
     name: Build and test
     runs-on: ubuntu-latest
