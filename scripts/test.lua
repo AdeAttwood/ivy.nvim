@@ -1,0 +1,62 @@
+package.path = "lua/?.lua;" .. package.path
+
+local global_context = {
+  current_test_name = "",
+  total = 0,
+  pass = 0,
+  fail = 0,
+}
+
+_G.it = function(name, callback)
+  local context = {
+    name = name,
+    error = function(message)
+      error(message, 2)
+    end,
+  }
+
+  local time = os.clock() * 1000
+  local status, err = pcall(callback, context)
+  local elapsed = (os.clock() * 1000) - time
+  local prefix = "\x1B[42mPASS"
+
+  global_context.total = global_context.total + 1
+
+  if status then
+    global_context.pass = global_context.pass + 1
+  else
+    global_context.fail = global_context.fail + 1
+    prefix = "\x1B[41mFAIL"
+  end
+
+  print(string.format("%s\x1B[0m %s - %s (%.3f ms)", prefix, global_context.current_test_name, name, elapsed))
+  if err then
+    print("  " .. err)
+  end
+end
+
+local start_time = os.clock()
+for _, name in ipairs(arg) do
+  -- Turn the file name in to a lau module name that we can require
+  local module = name:gsub("^lua/", "")
+  module, _ = module:gsub("/init.lua$", "")
+  module, _ = module:gsub(".lua$", "")
+  module = module:gsub("/", ".")
+
+  global_context.current_test_name = module:gsub("_test", "")
+  require(module)
+end
+
+print(string.format(
+  [[
+
+Tests: %d passed, %d total
+Time:  %.3f seconds]],
+  global_context.pass,
+  global_context.total,
+  (os.clock()) - start_time
+))
+
+if global_context.fail > 0 then
+  os.exit(1, true)
+end
