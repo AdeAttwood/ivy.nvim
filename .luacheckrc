@@ -9,4 +9,10 @@ self = false
 -- Global objects defined by the C code
 read_globals = {
   "vim",
+
+  "it",
+  "after",
+  "after_each",
+  "before",
+  "before_each",
 }

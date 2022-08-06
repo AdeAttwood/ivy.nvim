@@ -4,6 +4,7 @@ local libivy = require "ivy.libivy"
 
 -- Put the controller in to the vim global so we can access it in mappings
 -- better without requires. You can call controller commands like `vim.ivy.xxx`.
+-- luacheck: ignore
 vim.ivy = controller
 
 vim.api.nvim_create_user_command("IvyAg", function()
