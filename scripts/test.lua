@@ -2,10 +2,39 @@ package.path = "lua/?.lua;" .. package.path
 
 local global_context = {
   current_test_name = "",
+  before = {},
+  after = {},
+  before_each = {},
+  after_each = {},
   total = 0,
   pass = 0,
   fail = 0,
 }
+
+local call_hook = function(hook_name)
+  for index = 1, #global_context[hook_name] do
+    global_context[hook_name][index]()
+  end
+end
+
+_G.before_each = function(callback)
+  table.insert(global_context.before_each, callback)
+end
+
+_G.after_each = function(callback)
+  table.insert(global_context.after_each, callback)
+end
+
+_G.before = function(callback)
+  -- currently before functions just get called because we only have a context
+  -- of a test file. If we ever need to have more contexts then this will be to
+  -- be differed.
+  callback()
+end
+
+_G.after = function(callback)
+  table.insert(global_context.after, callback)
+end
 
 _G.it = function(name, callback)
   local context = {
@@ -15,11 +44,15 @@ _G.it = function(name, callback)
     end,
   }
 
+  call_hook "before_each"
+
   local time = os.clock() * 1000
   local status, err = pcall(callback, context)
   local elapsed = (os.clock() * 1000) - time
-  local prefix = "\x1B[42mPASS"
 
+  call_hook "before_each"
+
+  local prefix = "\x1B[42mPASS"
   global_context.total = global_context.total + 1
 
   if status then
@@ -45,6 +78,12 @@ for _, name in ipairs(arg) do
 
   global_context.current_test_name = module:gsub("_test", "")
   require(module)
+  call_hook "after"
+
+  global_context.before_each = {}
+  global_context.after_each = {}
+  global_context.before = {}
+  global_context.after = {}
 end
 
 print(string.format(
