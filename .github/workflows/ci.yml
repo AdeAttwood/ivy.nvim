@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push: { branches: ["0.x"] }
+  pull_request: { branches: ["0.x"] }
+
+jobs:
+  commits:
+    name: Commitlint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1000
+
+      - name: Lint commits
+        uses: docker://registry.k1.zportal.co.uk/practically-oss/conventional-tools:0.x
+        with:
+          args: conventional-tools commitlint -l1
+
+  test:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: sudo apt update && sudo apt install -y luajit build-essential pkg-config cmake
+
+      - name: Build
+        run: cmake -DCMAKE_BUILD_TYPE=Release -B build/Release && (cd build/Release; make -j)
+
+      - name: Test
+        run: find lua -name "*_test.lua" | xargs luajit scripts/test.lua
