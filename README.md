@@ -72,6 +72,36 @@ Action can be run on selected candidates provide functionality
   )
 ```
 
+## Benchmarks
+
+Benchmarks are of various tasks that ivy will do. The purpose of the benchmarks
+are to give us a baseline on where to start when trying to optimize performance
+in the matching and sorting, not to put ivy against other tools. When starting
+to optimize, you will probably need to get a baseline on your hardware.
+
+There are fixtures provided that will create the directory structure of the
+[kubernetes](https://github.com/kubernetes/kubernetes) source code, from
+somewhere arround commit sha 985c9202ccd250a5fe22c01faf0d8f83d804b9f3. This will
+create a directory tree of 23511 files a relative large source tree to get a
+good idea of performance. To create the source tree under
+`/tmp/ivy-trees/kubernetes` run the following command. This will need to be run
+for the benchmarks to run.
+
+```bash
+# Create the source trees
+bash ./scripts/fixtures.bash
+
+# Run the benchmark script
+luajit ./scripts/benchmark.lua
+```
+
+Current benchmark status with 8 CPU(s) Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz
+
+| Name                         | Total         | Adverage      | Min           | Max           |
+| ---------------------------- | ------------- | ------------- | ------------- | ------------- |
+| ivy_match(file.lua) 1000000x | 02.351614 (s) | 00.000002 (s) | 00.000002 (s) | 00.000042 (s) |
+| ivy_files(kubneties) 100x    | 32.704256 (s) | 00.327043 (s) | 00.289397 (s) | 00.344413 (s) |
+
 ## Other stuff you might like
 
 - [ivy-mode](https://github.com/abo-abo/swiper#ivy) - An emacs package that was the inspiration for this nvim plugin
