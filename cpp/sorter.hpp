@@ -20,7 +20,7 @@ class Sorter {
 
     if (score > -200) {
       std::unique_lock<std::mutex> lock(m_matches_lock);
-      m_matches.emplace_back(Match{score, file});
+      m_matches.emplace_back(Match{score, std::move(file)});
     }
   }
 
@@ -28,9 +28,9 @@ class Sorter {
   explicit Sorter(std::string_view term) : m_term(term) {}
   ~Sorter() { m_thread_pool.shutdown(); }
 
-  inline std::vector<Match> sort(std::vector<std::string> list) {
-    for (auto item : list) {
-      m_thread_pool.push([item, this]() { add_entry(item); });
+  inline std::vector<Match> sort(const std::vector<std::string>& list) {
+    for (const std::string& item : list) {
+      m_thread_pool.push([&item, this]() { add_entry(item); });
     }
 
     while (!m_thread_pool.empty()) {

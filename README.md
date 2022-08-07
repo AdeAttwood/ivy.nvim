@@ -99,8 +99,8 @@ Current benchmark status with 8 CPU(s) Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz
 
 | Name                         | Total         | Adverage      | Min           | Max           |
 | ---------------------------- | ------------- | ------------- | ------------- | ------------- |
-| ivy_match(file.lua) 1000000x | 02.351614 (s) | 00.000002 (s) | 00.000002 (s) | 00.000042 (s) |
-| ivy_files(kubneties) 100x    | 32.704256 (s) | 00.327043 (s) | 00.289397 (s) | 00.344413 (s) |
+| ivy_match(file.lua) 1000000x | 02.353386 (s) | 00.000002 (s) | 00.000002 (s) | 00.000049 (s) |
+| ivy_files(kubneties) 100x    | 24.809576 (s) | 00.248096 (s) | 00.203167 (s) | 00.270263 (s) |
 
 ## Other stuff you might like
 
