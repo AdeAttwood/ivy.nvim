@@ -22,6 +22,13 @@ it("sould match path separator", function(t)
   end
 end)
 
+it("sould match pattern with spaces", function(t)
+  local result = match_test("so fi", "some/file.lua", "somefile.lua")
+  if result then
+    t.error(result)
+  end
+end)
+
 it("sould match the start of a string", function(t)
   local result = match_test("file", "file.lua", "somefile.lua")
   if result then

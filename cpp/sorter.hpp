@@ -1,6 +1,7 @@
 #pragma once
 
-#include "./fuzzy_match.hpp"
+#define FTS_FUZZY_MATCH_IMPLEMENTATION
+#include "./fts_fuzzy_match.hpp"
 #include "./match.hpp"
 #include "./thread_pool.hpp"
 
@@ -9,16 +10,16 @@ namespace ivy {
 class Sorter {
   ivy::ThreadPool m_thread_pool;
 
-  std::string_view m_term;
+  std::string m_term;
 
   std::mutex m_matches_lock;
   std::vector<Match> m_matches;
 
   inline void add_entry(const std::string& file) {
-    ivy::FuzzyMatcher matcher(m_term, 0);
-    int score = matcher.match(file, false);
+    int score = 0;
+    fts::fuzzy_match(m_term.c_str(), file.c_str(), score);
 
-    if (score > -200) {
+    if (score > 50) {
       std::unique_lock<std::mutex> lock(m_matches_lock);
       m_matches.emplace_back(Match{score, std::move(file)});
     }
