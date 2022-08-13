@@ -1,0 +1,17 @@
+[package]
+name = "ivy"
+version = "0.0.1"
+edition = "2021"
+
+[lib]
+name = "ivyrs"
+crate-type = ["cdylib"]  
+path = "rust/lib.rs"
+
+[dependencies]
+ignore = "0.4"
+fuzzy-matcher = "0.3.7"
+lazy_static = "1.4.0"
+
+[profile.release]
+opt-level = 3
