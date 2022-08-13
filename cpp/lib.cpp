@@ -3,8 +3,9 @@
 #include <string>
 #include <vector>
 
+#define FTS_FUZZY_MATCH_IMPLEMENTATION
 #include "./file_scanner.hpp"
-#include "./fuzzy_match.hpp"
+#include "./fts_fuzzy_match.hpp"
 #include "./match.hpp"
 #include "./sorter.hpp"
 
@@ -18,8 +19,10 @@ extern "C" void ivy_init(const char* dir) {
 }
 
 extern "C" int ivy_match(const char* pattern, const char* text) {
-  auto matcher = ivy::FuzzyMatcher(pattern, 0);
-  return matcher.match(text, false);
+  int score = 0;
+  fts::fuzzy_match(pattern, text, score);
+
+  return score;
 }
 
 extern "C" char* ivy_files(const char* search, const char* base_dir) {
