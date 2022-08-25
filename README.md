@@ -25,14 +25,11 @@ For the native searching, you will need to compile the shard library. You can
 do that by running the below command in the root of the plugin.
 
 ```sh
-cmake -DCMAKE_BUILD_TYPE=Release -B build/Release && (cd build/Release; make -j)
+cargo build --release
 ```
 
-If you are missing build dependencies, you can install them via apt.
-
-```sh
-sudo apt-get install build-essential pkg-config cmake
-```
+You will need to have the rust toolchain installed. You can find more about
+that [here](https://www.rust-lang.org/tools/install)
 
 ## Features
 
@@ -95,12 +92,22 @@ bash ./scripts/fixtures.bash
 luajit ./scripts/benchmark.lua
 ```
 
-Current benchmark status with 8 CPU(s) Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz
+Current benchmark status running on a `e2-standard-2` 2 vCPU + 8 GB memory VM
+running on GCP.
 
-| Name                         | Total         | Adverage      | Min           | Max           |
-| ---------------------------- | ------------- | ------------- | ------------- | ------------- |
-| ivy_match(file.lua) 1000000x | 02.353386 (s) | 00.000002 (s) | 00.000002 (s) | 00.000049 (s) |
-| ivy_files(kubneties) 100x    | 24.809576 (s) | 00.248096 (s) | 00.203167 (s) | 00.270263 (s) |
+Rust 
+
+| Name                           | Total         | Adverage      | Min           | Max           |
+|--------------------------------|---------------|---------------|---------------|---------------|
+| ivy_match(file.lua) 1000000x   | 03.961640 (s) | 00.000004 (s) | 00.000003 (s) | 00.002146 (s) |
+| ivy_files(kubernetes) 100x     | 03.895758 (s) | 00.038958 (s) | 00.034903 (s) | 00.043660 (s) |
+
+CPP
+
+| Name                           | Total         | Adverage      | Min           | Max           |
+|--------------------------------|---------------|---------------|---------------|---------------|
+| ivy_match(file.lua) 1000000x   | 01.855197 (s) | 00.000002 (s) | 00.000001 (s) | 00.000177 (s) |
+| ivy_files(kubernetes) 100x     | 14.696396 (s) | 00.146964 (s) | 00.056604 (s) | 00.168478 (s) |
 
 ## Other stuff you might like
 
