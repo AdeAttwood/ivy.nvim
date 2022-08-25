@@ -23,7 +23,7 @@ impl Options {
 
 pub fn sort_strings(options: Options, strings: Vec<String>) -> Arc<Mutex<Vec<Match>>> {
     let matches: Arc<Mutex<Vec<Match>>> = Arc::new(Mutex::new(Vec::new()));
-    let matcher = Arc::new(Mutex::new(matcher::Matcher{ pattern: options.pattern }));
+    let matcher = Arc::new(Mutex::new(matcher::Matcher::new(options.pattern)));
 
     let pool = thread_pool::ThreadPool::new(std::thread::available_parallelism().unwrap().get());
 

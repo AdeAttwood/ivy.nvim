@@ -41,7 +41,7 @@ pub extern "C" fn ivy_match(c_pattern: *const c_char, c_text: *const c_char) -> 
     let pattern = to_string(c_pattern);
     let text = to_string(c_text);
 
-    let m = matcher::Matcher{ pattern };
+    let m = matcher::Matcher::new( pattern );
     return m.score(text) as i32;
 }
 
