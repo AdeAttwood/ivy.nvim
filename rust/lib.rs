@@ -31,7 +31,10 @@ fn get_files(directory: &String) -> Vec<String> {
 }
 
 #[no_mangle]
-pub extern "C" fn ivy_init() {}
+pub extern "C" fn ivy_init(c_base_dir: *const c_char) {
+    let directory = to_string(c_base_dir);
+    get_files(&directory);
+}
 
 #[no_mangle]
 pub extern "C" fn ivy_match(c_pattern: *const c_char, c_text: *const c_char) -> c_int {
