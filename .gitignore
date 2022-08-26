@@ -3,3 +3,6 @@ target
 .cache
 compile_commands.json
 .luacheckcache
+benchmarks
+flamegraph*
+perf.data*

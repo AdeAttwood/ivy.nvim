@@ -5,13 +5,28 @@ edition = "2021"
 
 [lib]
 name = "ivyrs"
-crate-type = ["cdylib"]  
+crate-type = ["cdylib", "rlib"]
 path = "rust/lib.rs"
 
 [dependencies]
 ignore = "0.4"
 fuzzy-matcher = "0.3.7"
 lazy_static = "1.4.0"
+rayon = "1.5.3"
+
+[dev-dependencies]
+criterion = "0.3.6"
 
 [profile.release]
 opt-level = 3
+
+[profile.bench]
+debug = true
+
+[[bench]]
+name = "ivy_match"
+harness = false
+
+[[bench]]
+name = "ivy_files"
+harness = false
