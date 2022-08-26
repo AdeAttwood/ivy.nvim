@@ -1,7 +1,6 @@
 mod finder;
 mod matcher;
 mod sorter;
-mod thread_pool;
 
 use std::collections::HashMap;
 use std::ffi::CStr;
