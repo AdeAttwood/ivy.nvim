@@ -8,14 +8,14 @@ pub struct Match {
 
 pub struct Options {
     pub pattern: String,
-    pub minimun_score: i64,
+    pub minimum_score: i64,
 }
 
 impl Options {
     pub fn new(pattern: String) -> Self {
         Self {
             pattern,
-            minimun_score: 20,
+            minimum_score: 25,
         }
     }
 }
@@ -29,7 +29,7 @@ pub fn sort_strings(options: Options, strings: Vec<String>) -> Vec<Match> {
             score: matcher.score(candidate.as_str()),
             content: candidate,
         })
-        .filter(|m| m.score > 25)
+        .filter(|m| m.score > options.minimum_score)
         .collect::<Vec<Match>>();
     matches.par_sort_unstable_by(|a, b| a.score.cmp(&b.score));
     matches
