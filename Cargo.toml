@@ -12,6 +12,7 @@ path = "rust/lib.rs"
 ignore = "0.4"
 fuzzy-matcher = "0.3.7"
 lazy_static = "1.4.0"
+rayon = "1.5.3"
 
 [dev-dependencies]
 criterion = "0.3.6"

@@ -274,6 +274,7 @@ dependencies = [
  "fuzzy-matcher",
  "ignore",
  "lazy_static",
+ "rayon",
 ]
 
 [[package]]

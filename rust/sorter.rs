@@ -1,8 +1,5 @@
 use super::matcher;
-use super::thread_pool;
-
-use std::sync::mpsc;
-use std::sync::Arc;
+use rayon::prelude::*;
 
 pub struct Match {
     pub score: i64,
@@ -27,7 +24,7 @@ pub fn sort_strings(options: Options, strings: Vec<String>) -> Vec<Match> {
     let matcher = matcher::Matcher::new(options.pattern);
 
     let mut matches = strings
-        .into_iter()
+        .into_par_iter()
         .map(|candidate| Match {
             score: matcher.score(candidate.as_str()),
             content: candidate,
