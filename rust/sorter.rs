@@ -31,6 +31,6 @@ pub fn sort_strings(options: Options, strings: Vec<String>) -> Vec<Match> {
         })
         .filter(|m| m.score > 25)
         .collect::<Vec<Match>>();
-    matches.sort_by(|a, b| a.score.cmp(&b.score));
+    matches.par_sort_unstable_by(|a, b| a.score.cmp(&b.score));
     matches
 }
