@@ -15,9 +15,9 @@ impl Matcher {
         }
     }
 
-    pub fn score(&self, text: String) -> i64 {
+    pub fn score(&self, text: &str) -> i64 {
         self.matcher
-            .fuzzy_indices(&text, &self.pattern)
+            .fuzzy_indices(text, &self.pattern)
             .map(|(score, _indices)| score)
             .unwrap_or_default()
     }

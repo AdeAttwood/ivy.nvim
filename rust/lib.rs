@@ -52,7 +52,7 @@ pub extern "C" fn ivy_match(c_pattern: *const c_char, c_text: *const c_char) -> 
 pub fn inner_match(pattern: String, text: String) -> i32 {
     let m = matcher::Matcher::new(pattern);
 
-    m.score(text) as i32
+    m.score(text.as_str()) as i32
 }
 
 #[no_mangle]
