@@ -66,18 +66,19 @@ pub extern "C" fn ivy_files(c_pattern: *const c_char, c_base_dir: *const c_char)
 }
 
 pub fn inner_files(pattern: String, base_dir: String) -> String {
-    // Bail out early if the pattern is empty its never going to find anything
+    let mut output = String::new();
+
+    // Bail out early if the pattern is empty; it's never going to find anything
     if pattern.is_empty() {
-        return String::new();
+        return output;
     }
 
     let files = get_files(&base_dir);
 
-    let mut output = String::new();
     let sorter_options = sorter::Options::new(pattern);
 
     let files = sorter::sort_strings(sorter_options, files);
-    for file in files.lock().unwrap().iter() {
+    for file in files.iter() {
         output.push_str(&file.content);
         output.push('\n');
     }
