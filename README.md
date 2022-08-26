@@ -78,7 +78,7 @@ to optimize, you will probably need to get a baseline on your hardware.
 
 There are fixtures provided that will create the directory structure of the
 [kubernetes](https://github.com/kubernetes/kubernetes) source code, from
-somewhere arround commit sha 985c9202ccd250a5fe22c01faf0d8f83d804b9f3. This will
+somewhere around commit sha 985c9202ccd250a5fe22c01faf0d8f83d804b9f3. This will
 create a directory tree of 23511 files a relative large source tree to get a
 good idea of performance. To create the source tree under
 `/tmp/ivy-trees/kubernetes` run the following command. This will need to be run
@@ -95,16 +95,16 @@ luajit ./scripts/benchmark.lua
 Current benchmark status running on a `e2-standard-2` 2 vCPU + 8 GB memory VM
 running on GCP.
 
-Rust 
+Rust
 
-| Name                           | Total         | Adverage      | Min           | Max           |
+| Name                           | Total         | Average       | Min           | Max           |
 |--------------------------------|---------------|---------------|---------------|---------------|
 | ivy_match(file.lua) 1000000x   | 03.961640 (s) | 00.000004 (s) | 00.000003 (s) | 00.002146 (s) |
 | ivy_files(kubernetes) 100x     | 03.895758 (s) | 00.038958 (s) | 00.034903 (s) | 00.043660 (s) |
 
 CPP
 
-| Name                           | Total         | Adverage      | Min           | Max           |
+| Name                           | Total         | Average       | Min           | Max           |
 |--------------------------------|---------------|---------------|---------------|---------------|
 | ivy_match(file.lua) 1000000x   | 01.855197 (s) | 00.000002 (s) | 00.000001 (s) | 00.000177 (s) |
 | ivy_files(kubernetes) 100x     | 14.696396 (s) | 00.146964 (s) | 00.056604 (s) | 00.168478 (s) |

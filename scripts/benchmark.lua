@@ -35,7 +35,7 @@ local benchmark = function(name, n, callback)
   )
 end
 
-print "| Name                           | Total         | Adverage      | Min           | Max           |"
+print "| Name                           | Total         | Average       | Min           | Max           |"
 print "|--------------------------------|---------------|---------------|---------------|---------------|"
 
 benchmark("ivy_match(file.lua) 1000000x", 1000000, function()

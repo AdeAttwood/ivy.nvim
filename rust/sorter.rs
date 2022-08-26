@@ -1,9 +1,8 @@
 use super::matcher;
 use super::thread_pool;
 
-
-use std::sync::Mutex;
 use std::sync::Arc;
+use std::sync::Mutex;
 
 pub struct Match {
     pub score: i64,
@@ -17,7 +16,10 @@ pub struct Options {
 
 impl Options {
     pub fn new(pattern: String) -> Self {
-        return Self { pattern, minimun_score: 20 };
+        Self {
+            pattern,
+            minimun_score: 20,
+        }
     }
 }
 
@@ -35,14 +37,16 @@ pub fn sort_strings(options: Options, strings: Vec<String>) -> Arc<Mutex<Vec<Mat
             if score > 25 {
                 let mut tmp = thread_matches.lock().unwrap();
                 let content = string.clone();
-                tmp.push(Match{ score, content });
+                tmp.push(Match { score, content });
             }
         })
     }
 
     drop(pool);
 
-    matches.lock().unwrap().sort_by(|a, b| a.score.cmp(&b.score));
-    return matches;
+    matches
+        .lock()
+        .unwrap()
+        .sort_by(|a, b| a.score.cmp(&b.score));
+    matches
 }
-

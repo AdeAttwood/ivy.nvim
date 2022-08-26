@@ -35,7 +35,7 @@ impl ThreadPool {
             threads.push(Worker::new(id, Arc::clone(&receiver)));
         }
 
-        return ThreadPool { jobs, threads };
+        ThreadPool { jobs, threads }
     }
 
     pub fn execute<F>(&self, f: F)
@@ -62,7 +62,7 @@ impl Drop for ThreadPool {
 }
 
 struct Worker {
-    id: usize,
+    _id: usize,
     thread: Option<thread::JoinHandle<()>>,
 }
 
@@ -79,9 +79,9 @@ impl Worker {
             }
         });
 
-        return Worker {
-            id,
+        Worker {
+            _id: id,
             thread: Some(thread),
-        };
+        }
     }
 }

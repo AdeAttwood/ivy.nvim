@@ -22,5 +22,5 @@ pub fn find_files(options: Options) -> Vec<String> {
         files.push(candidate_path.to_str().unwrap().to_string());
     }
 
-    return files;
+    files
 }
