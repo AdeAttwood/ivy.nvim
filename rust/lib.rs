@@ -46,6 +46,10 @@ pub extern "C" fn ivy_match(c_pattern: *const c_char, c_text: *const c_char) -> 
     let pattern = to_string(c_pattern);
     let text = to_string(c_text);
 
+    inner_match(pattern, text)
+}
+
+pub fn inner_match(pattern: String, text: String) -> i32 {
     let m = matcher::Matcher::new(pattern);
 
     m.score(text) as i32
@@ -56,12 +60,18 @@ pub extern "C" fn ivy_files(c_pattern: *const c_char, c_base_dir: *const c_char)
     let pattern = to_string(c_pattern);
     let directory = to_string(c_base_dir);
 
+    let output = inner_files(pattern, directory);
+
+    CString::new(output).unwrap().into_raw()
+}
+
+pub fn inner_files(pattern: String, base_dir: String) -> String {
     // Bail out early if the pattern is empty its never going to find anything
     if pattern.is_empty() {
-        return CString::new("").unwrap().into_raw();
+        return String::new();
     }
 
-    let files = get_files(&directory);
+    let files = get_files(&base_dir);
 
     let mut output = String::new();
     let sorter_options = sorter::Options::new(pattern);
@@ -72,5 +82,5 @@ pub extern "C" fn ivy_files(c_pattern: *const c_char, c_base_dir: *const c_char)
         output.push('\n');
     }
 
-    CString::new(output).unwrap().into_raw()
+    output
 }
