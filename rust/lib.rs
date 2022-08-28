@@ -4,9 +4,15 @@ mod sorter;
 
 use std::collections::HashMap;
 use std::ffi::CStr;
-use std::ffi::CString;
 use std::os::raw::{c_char, c_int};
 use std::sync::Mutex;
+use std::mem;
+
+#[repr(C)]
+pub struct FFiMatchList {
+    len: c_int,
+    matches: *mut sorter::Match
+}
 
 #[macro_use]
 extern crate lazy_static;
@@ -20,6 +26,15 @@ fn to_string(input: *const c_char) -> String {
         .to_str()
         .unwrap()
         .to_string()
+}
+
+fn to_ffi_match_list(mut list: Vec<sorter::Match>) -> *const FFiMatchList {
+    list.shrink_to_fit();
+    let matches = list.as_mut_ptr();
+    let len: c_int = list.len().try_into().unwrap();
+    mem::forget(list);
+
+    return Box::into_raw(Box::new(FFiMatchList { len, matches }))
 }
 
 fn get_files(directory: &String) -> Vec<String> {
@@ -55,32 +70,21 @@ pub fn inner_match(pattern: String, text: String) -> i32 {
 }
 
 #[no_mangle]
-pub extern "C" fn ivy_files(c_pattern: *const c_char, c_base_dir: *const c_char) -> *const c_char {
+pub extern "C" fn ivy_files(c_pattern: *const c_char, c_base_dir: *const c_char) -> *const FFiMatchList {
     let pattern = to_string(c_pattern);
     let directory = to_string(c_base_dir);
 
-    let output = inner_files(pattern, directory);
-
-    CString::new(output).unwrap().into_raw()
+    return inner_files(pattern, directory);
 }
 
-pub fn inner_files(pattern: String, base_dir: String) -> String {
-    let mut output = String::new();
-
+pub fn inner_files(pattern: String, base_dir: String) -> *const FFiMatchList {
     // Bail out early if the pattern is empty; it's never going to find anything
     if pattern.is_empty() {
-        return output;
+        return to_ffi_match_list(Vec::new());
     }
 
     let files = get_files(&base_dir);
 
     let sorter_options = sorter::Options::new(pattern);
-
-    let files = sorter::sort_strings(sorter_options, files);
-    for file in files.iter() {
-        output.push_str(&file.content);
-        output.push('\n');
-    }
-
-    output
+    to_ffi_match_list(sorter::sort_strings(sorter_options, files))
 }

@@ -1,3 +1,5 @@
+local ffi = require "ffi"
+
 -- Constent options that will be used for the keymaps
 local opts = { noremap = true, silent = true, nowait = true }
 
@@ -22,12 +24,12 @@ local function string_to_table(lines)
 end
 
 local function set_items_string(buffer, lines)
-  vim.api.nvim_buf_set_lines(buffer, 0, 9999, false, string_to_table(lines))
+  vim.api.nvim_buf_set_lines(buffer, 0, -1, false, string_to_table(lines))
 end
 
 local function set_items_array(buffer, lines)
   if type(lines[1]) == "string" then
-    vim.api.nvim_buf_set_lines(buffer, 0, 9999, false, lines)
+    vim.api.nvim_buf_set_lines(buffer, 0, -1, false, lines)
   else
     for i = 1, #lines do
       vim.api.nvim_buf_set_lines(buffer, i - 1, 9999, false, { lines[i][2] })
@@ -112,7 +114,13 @@ window.update = function()
 end
 
 window.set_items = function(items)
-  if #items == 0 then
+  vim.api.nvim_buf_set_lines(window.get_buffer(), 0, -1, false, {})
+
+  if items.len ~= nil then
+    for i = 0, items.len - 1 do
+      vim.api.nvim_buf_set_lines(window.get_buffer(), i - 1, -1, false, { ffi.string(items.matches[i].content) })
+    end
+  elseif #items == 0 then
     vim.api.nvim_buf_set_lines(window.get_buffer(), 0, 9999, false, { "-- No Items --" })
   elseif type(items) == "string" then
     set_items_string(window.get_buffer(), items)

@@ -7,9 +7,12 @@ local ffi = require "ffi"
 local ivy_c = ffi.load(library_path)
 
 ffi.cdef [[
+    typedef struct {  int score; const char* content; } match;
+    typedef struct {  int len; match* matches; } match_list;
+
     void ivy_init(const char*);
     int ivy_match(const char*, const char*);
-    char* ivy_files(const char*, const char*);
+    match_list* ivy_files(const char*, const char*);
 ]]
 
 local libivy = {}
@@ -23,7 +26,7 @@ libivy.ivy_match = function(pattern, text)
 end
 
 libivy.ivy_files = function(pattern, base_dir)
-  return ffi.string(ivy_c.ivy_files(pattern, base_dir))
+  return ivy_c.ivy_files(pattern, base_dir)
 end
 
 return libivy
