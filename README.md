@@ -31,6 +31,16 @@ cargo build --release
 You will need to have the rust toolchain installed. You can find more about
 that [here](https://www.rust-lang.org/tools/install)
 
+If you get a linker error you may need to install `build-essential` to get
+`ld`. This is a common issue if you are running the [benchmarks](#benchmarks)
+in a VM
+
+```
+error: linker `cc` not found
+  |
+  = note: No such file or directory (os error 2)
+```
+
 ## Features
 
 ### Commands
@@ -95,19 +105,26 @@ luajit ./scripts/benchmark.lua
 Current benchmark status running on a `e2-standard-2` 2 vCPU + 8 GB memory VM
 running on GCP.
 
-Rust
+IvyRs (Lua)
 
-| Name                           | Total         | Average       | Min           | Max           |
-|--------------------------------|---------------|---------------|---------------|---------------|
-| ivy_match(file.lua) 1000000x   | 03.961640 (s) | 00.000004 (s) | 00.000003 (s) | 00.002146 (s) |
-| ivy_files(kubernetes) 100x     | 03.895758 (s) | 00.038958 (s) | 00.034903 (s) | 00.043660 (s) |
+| Name                         | Total         | Average       | Min           | Max           |
+| ---------------------------- | ------------- | ------------- | ------------- | ------------- |
+| ivy_match(file.lua) 1000000x | 04.153531 (s) | 00.000004 (s) | 00.000003 (s) | 00.002429 (s) |
+| ivy_files(kubernetes) 100x   | 03.526795 (s) | 00.035268 (s) | 00.021557 (s) | 00.037127 (s) |
+
+IvyRs (Criterion)
+
+| Name                  | Min       | Mean      | Max       |
+| --------------------- | --------- | --------- | --------- |
+| ivy_files(kubernetes) | 19.727 ms | 19.784 ms | 19.842 ms |
+| ivy_match(file.lua)   | 2.6772 µs | 2.6822 µs | 2.6873 µs |
 
 CPP
 
-| Name                           | Total         | Average       | Min           | Max           |
-|--------------------------------|---------------|---------------|---------------|---------------|
-| ivy_match(file.lua) 1000000x   | 01.855197 (s) | 00.000002 (s) | 00.000001 (s) | 00.000177 (s) |
-| ivy_files(kubernetes) 100x     | 14.696396 (s) | 00.146964 (s) | 00.056604 (s) | 00.168478 (s) |
+| Name                         | Total         | Average       | Min           | Max           |
+| ---------------------------- | ------------- | ------------- | ------------- | ------------- |
+| ivy_match(file.lua) 1000000x | 01.855197 (s) | 00.000002 (s) | 00.000001 (s) | 00.000177 (s) |
+| ivy_files(kubernetes) 100x   | 14.696396 (s) | 00.146964 (s) | 00.056604 (s) | 00.168478 (s) |
 
 ## Other stuff you might like
 
