@@ -35,7 +35,7 @@ local benchmark = function(name, n, callback)
   )
 end
 
-print "| Name                           | Total         | Adverage      | Min           | Max           |"
+print "| Name                           | Total         | Average       | Min           | Max           |"
 print "|--------------------------------|---------------|---------------|---------------|---------------|"
 
 benchmark("ivy_match(file.lua) 1000000x", 1000000, function()
@@ -43,6 +43,6 @@ benchmark("ivy_match(file.lua) 1000000x", 1000000, function()
 end)
 
 libivy.ivy_init "/tmp/ivy-trees/kubernetes"
-benchmark("ivy_files(kubneties) 100x", 100, function()
+benchmark("ivy_files(kubernetes) 100x", 100, function()
   libivy.ivy_files("file.go", "/tmp/ivy-trees/kubernetes")
 end)

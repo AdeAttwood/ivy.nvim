@@ -17,7 +17,7 @@ jobs:
       - name: Lint commits
         uses: docker://registry.k1.zportal.co.uk/practically-oss/conventional-tools:0.x
         with:
-          args: conventional-tools commitlint -l1
+          args: conventional-tools commitlint -l1 -f39febd82e236a9c79f5b408e98cbd20410f11e9e
 
   luacheck:
     name: Luacheck
@@ -48,6 +48,19 @@ jobs:
       - name: Run clang format
         run: find ./cpp -name "*.cpp" -o -name "*.hpp" | xargs clang-format -Werror --dry-run
 
+  cargo-format:
+    name: Cargo Format
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Run cargo format
+        uses: actions-rs/cargo@v1
+        with:
+          command: fmt
+          args: --all -- --check
+
   test:
     name: Build and test
     runs-on: ubuntu-latest
@@ -55,11 +68,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Install rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+
       - name: Install dependencies
-        run: sudo apt update && sudo apt install -y luajit build-essential pkg-config cmake
+        run: sudo apt update && sudo apt install -y luajit build-essential
 
       - name: Build
-        run: cmake -DCMAKE_BUILD_TYPE=Release -B build/Release && (cd build/Release; make -j)
+        run: cargo build --release
 
       - name: Test
         run: find lua -name "*_test.lua" | xargs luajit scripts/test.lua
