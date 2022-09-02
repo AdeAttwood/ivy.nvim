@@ -119,7 +119,7 @@ window.set_items = function(items)
 
   -- Limit the results window size to 10 so when there are lots of results the
   -- window does not take up the hole terminal
-  local line_count = items_length - 1
+  local line_count = items_length
   if line_count > 10 then
     line_count = 10
   end
