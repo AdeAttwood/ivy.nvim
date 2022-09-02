@@ -27,7 +27,8 @@ vim.api.nvim_create_user_command("IvyBuffers", function()
       -- substring +2 to remove the `/` from the start of the path to give us a
       -- true relative path
       local buffer_name = vim.api.nvim_buf_get_name(buffer):sub(#vim.fn.getcwd() + 2, -1)
-      if vim.api.nvim_buf_is_loaded(buffer) and #buffer_name > 0 then
+      local file_type = vim.api.nvim_buf_get_option(buffer, "filetype")
+      if vim.api.nvim_buf_is_loaded(buffer) and file_type ~= "ivy" and #buffer_name > 0 then
         local score = libivy.ivy_match(input, buffer_name)
         if score > -200 or #input == 0 then
           table.insert(list, { score = score, content = buffer_name })
