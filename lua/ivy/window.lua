@@ -13,26 +13,12 @@ local chars = {
 }
 
 local function string_to_table(lines)
-  local items = {}
+  local matches = {}
   for line in lines:gmatch "[^\r\n]+" do
-    table.insert(items, line)
+    table.insert(matches, { content = line })
   end
 
-  return items
-end
-
-local function set_items_string(buffer, lines)
-  vim.api.nvim_buf_set_lines(buffer, 0, 9999, false, string_to_table(lines))
-end
-
-local function set_items_array(buffer, lines)
-  if type(lines[1]) == "string" then
-    vim.api.nvim_buf_set_lines(buffer, 0, 9999, false, lines)
-  else
-    for i = 1, #lines do
-      vim.api.nvim_buf_set_lines(buffer, i - 1, 9999, false, { lines[i][2] })
-    end
-  end
+  return matches
 end
 
 local window = {}
@@ -112,16 +98,28 @@ window.update = function()
 end
 
 window.set_items = function(items)
-  if #items == 0 then
-    vim.api.nvim_buf_set_lines(window.get_buffer(), 0, 9999, false, { "-- No Items --" })
-  elseif type(items) == "string" then
-    set_items_string(window.get_buffer(), items)
-  elseif type(items) == "table" then
-    set_items_array(window.get_buffer(), items)
+  if type(items) == "string" then
+    items = string_to_table(items)
   end
 
-  local line_count = vim.api.nvim_buf_line_count(window.buffer)
-  window.index = line_count - 1
+  -- TODO(ade): Validate the items are in the correct format. This also need to
+  -- come with some descriptive messages and possible help.
+
+  -- Display no items text if there are no items to dispaly
+  if #items == 0 then
+    items = { { content = "-- No Items --"  } }
+  end
+
+  local items_length = #items
+  window.index = items_length - 1
+
+  for index = 1, items_length do
+    vim.api.nvim_buf_set_lines(window.buffer, index - 1, -1, false, { items[index].content })
+  end
+
+  -- Limit the results window size to 10 so when there are lots of results the
+  -- window does not take up the hole terminal
+  local line_count = items_length - 1
   if line_count > 10 then
     line_count = 10
   end

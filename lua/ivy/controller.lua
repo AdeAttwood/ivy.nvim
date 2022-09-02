@@ -11,7 +11,8 @@ controller.run = function(name, items, callback)
   controller.items = items
 
   window.initialize()
-  window.set_items { "-- Loading ---" }
+
+  window.set_items { { content = "-- Loading ---"  } }
   vim.api.nvim_buf_set_name(window.get_buffer(), name)
 
   controller.input ""
