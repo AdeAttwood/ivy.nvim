@@ -70,4 +70,4 @@ vim.api.nvim_set_keymap("n", "<leader>b", "<cmd>IvyBuffers<CR>", { nowait = true
 vim.api.nvim_set_keymap("n", "<leader>p", "<cmd>IvyFd<CR>", { nowait = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>/", "<cmd>IvyAg<CR>", { nowait = true, silent = true })
 
-vim.cmd "highlight IvyMatch cterm=bold"
+vim.cmd "highlight IvyMatch cterm=bold gui=bold"
