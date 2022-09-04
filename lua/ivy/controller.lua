@@ -37,7 +37,9 @@ controller.update = function(text)
 end
 
 controller.complete = function()
-  controller.checkpoint()
+  vim.api.nvim_set_current_win(window.origin)
+  controller.callback(window.get_current_selection())
+
   controller.destroy()
 end
 
