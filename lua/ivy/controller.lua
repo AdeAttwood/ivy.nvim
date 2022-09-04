@@ -12,7 +12,7 @@ controller.run = function(name, items, callback)
 
   window.initialize()
 
-  window.set_items { { content = "-- Loading ---"  } }
+  window.set_items { { content = "-- Loading ---" } }
   vim.api.nvim_buf_set_name(window.get_buffer(), name)
 
   controller.input ""
@@ -31,7 +31,7 @@ end
 controller.update = function(text)
   vim.schedule(function()
     window.set_items(controller.items(text))
-    vim.cmd("syntax clear IvyMatch")
+    vim.cmd "syntax clear IvyMatch"
     vim.cmd("syntax match IvyMatch '[(" .. text .. ")]'")
   end)
 end

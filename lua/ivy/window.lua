@@ -107,7 +107,7 @@ window.set_items = function(items)
 
   -- Display no items text if there are no items to dispaly
   if #items == 0 then
-    items = { { content = "-- No Items --"  } }
+    items = { { content = "-- No Items --" } }
   end
 
   local items_length = #items
