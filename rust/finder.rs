@@ -1,4 +1,4 @@
-use ignore::WalkBuilder;
+use ignore::{overrides::OverrideBuilder, WalkBuilder};
 use std::fs;
 
 pub struct Options {
@@ -10,7 +10,15 @@ pub fn find_files(options: Options) -> Vec<String> {
     let base_path = &fs::canonicalize(options.directory).unwrap();
 
     let mut builder = WalkBuilder::new(base_path);
-    builder.ignore(true).hidden(true);
+    builder.hidden(false);
+
+    // TODO(ade): Remove unwraps and find a good way to get the errors into the UI. Currently there
+    // is no way to handel errors in the rust library
+    let mut override_builder = OverrideBuilder::new("");
+    override_builder.add("!.git").unwrap();
+
+    let overrides = override_builder.build().unwrap();
+    builder.overrides(overrides);
 
     for result in builder.build() {
         let absolute_candidate = result.unwrap();

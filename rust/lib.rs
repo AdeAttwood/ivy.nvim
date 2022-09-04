@@ -41,6 +41,13 @@ pub extern "C" fn ivy_init(c_base_dir: *const c_char) {
 }
 
 #[no_mangle]
+pub extern "C" fn ivy_cwd() -> *const c_char {
+    return CString::new(std::env::current_dir().unwrap().to_str().unwrap())
+        .unwrap()
+        .into_raw();
+}
+
+#[no_mangle]
 pub extern "C" fn ivy_match(c_pattern: *const c_char, c_text: *const c_char) -> c_int {
     let pattern = to_string(c_pattern);
     let text = to_string(c_text);

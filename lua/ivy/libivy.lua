@@ -8,6 +8,7 @@ local ivy_c = ffi.load(library_path)
 
 ffi.cdef [[
     void ivy_init(const char*);
+    char* ivy_cwd();
     int ivy_match(const char*, const char*);
     char* ivy_files(const char*, const char*);
 ]]
@@ -16,6 +17,10 @@ local libivy = {}
 
 libivy.ivy_init = function(dir)
   ivy_c.ivy_init(dir)
+end
+
+libivy.ivy_cwd = function ()
+  return  ffi.string(ivy_c.ivy_cwd())
 end
 
 libivy.ivy_match = function(pattern, text)
