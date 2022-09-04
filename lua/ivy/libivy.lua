@@ -19,8 +19,8 @@ libivy.ivy_init = function(dir)
   ivy_c.ivy_init(dir)
 end
 
-libivy.ivy_cwd = function ()
-  return  ffi.string(ivy_c.ivy_cwd())
+libivy.ivy_cwd = function()
+  return ffi.string(ivy_c.ivy_cwd())
 end
 
 libivy.ivy_match = function(pattern, text)
