@@ -69,7 +69,9 @@ window.make_buffer = function()
     "<cmd>lua vim.ivy.previous(); vim.ivy.checkpoint()<CR>",
     opts
   )
-  vim.api.nvim_buf_set_keymap(window.buffer, "n", "<CR>", "<cmd>lua vim.ivy.complete()<CR>", opts)
+  vim.api.nvim_buf_set_keymap(window.buffer, "n", "<CR>", "<cmd>lua vim.ivy.complete(vim.ivy.action.EDIT)<CR>", opts)
+  vim.api.nvim_buf_set_keymap(window.buffer, "n", "<C-v>", "<cmd>lua vim.ivy.complete(vim.ivy.action.VSPLIT)<CR>", opts)
+  vim.api.nvim_buf_set_keymap(window.buffer, "n", "<C-s>", "<cmd>lua vim.ivy.complete(vim.ivy.action.SPLIT)<CR>", opts)
   vim.api.nvim_buf_set_keymap(window.buffer, "n", "<BS>", "<cmd>lua vim.ivy.input('BACKSPACE')<CR>", opts)
   vim.api.nvim_buf_set_keymap(window.buffer, "n", "<Left>", "<cmd>lua vim.ivy.input('LEFT')<CR>", opts)
   vim.api.nvim_buf_set_keymap(window.buffer, "n", "<Right>", "<cmd>lua vim.ivy.input('RIGHT')<CR>", opts)

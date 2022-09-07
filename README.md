@@ -58,10 +58,12 @@ A command can be run that will launch the completion UI
 
 Action can be run on selected candidates provide functionality
 
-| Action   | Description                                                                    |
-| -------- | ------------------------------------------------------------------------------ |
-| Complete | Run the completion function, usually this will be opening a file               |
-| Peek     | Run the completion function on a selection, but don't close the results window |
+| Action         | Description                                                                    |
+| -------------- | ------------------------------------------------------------------------------ |
+| Complete       | Run the completion function, usually this will be opening a file               |
+| Peek           | Run the completion function on a selection, but don't close the results window |
+| Vertical Split | Run the completion function in a new vertical split                            |
+| Split          | Run the completion function in a new split                                     |
 
 ## API
 

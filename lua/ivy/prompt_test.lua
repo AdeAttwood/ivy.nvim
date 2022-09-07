@@ -1,14 +1,8 @@
 local prompt = require "ivy.prompt"
+local vim_mock = require "ivy.vim_mock"
 
 before_each(function()
-  -- Mock the global vim functions we are using in the prompt
-  _G.vim = {
-    notify = function() end,
-    api = {
-      nvim_echo = function() end,
-    },
-  }
-
+  vim_mock.reset()
   prompt.destroy()
 end)
 
@@ -23,7 +17,7 @@ end
 local assert_prompt = function(t, expected)
   local text = prompt.text()
   if text ~= expected then
-    t.error("The promp text should be '" .. expected .. "' found '" .. text .. "'")
+    t.error("The prompt text should be '" .. expected .. "' found '" .. text .. "'")
   end
 end
 
