@@ -1,5 +1,22 @@
 local utils = {}
 
+-- A list of all of the actions defined by ivy. The callback function can
+-- implement as many of them as necessary. As a minimum it should implement the
+-- "EDIT" action that is called on the default complete.
+utils.actions = {
+  EDIT = "EDIT",
+  CHECKPOINT = "CHECKPOINT",
+  VSPLIT = "VSPLIT",
+  SPLIT = "SPLIT",
+}
+
+utils.command_map = {
+  [utils.actions.EDIT] = "edit",
+  [utils.actions.CHECKPOINT] = "edit",
+  [utils.actions.VSPLIT] = "vsplit",
+  [utils.actions.SPLIT] = "split",
+}
+
 utils.command_finder = function(command, min)
   if min == nil then
     min = 3
@@ -28,7 +45,7 @@ utils.command_finder = function(command, min)
 end
 
 utils.vimgrep_action = function()
-  return function(item)
+  return function(item, action)
     -- Match file and line form vimgrep style commands
     local file = item:match "([^:]+):"
     local line = item:match ":(%d+):"
@@ -38,7 +55,7 @@ utils.vimgrep_action = function()
       return
     end
 
-    vim.cmd("edit " .. file)
+    utils.file_action()(file, action)
     if line ~= nil then
       vim.cmd(line)
     end
@@ -46,11 +63,18 @@ utils.vimgrep_action = function()
 end
 
 utils.file_action = function()
-  return function(file)
+  return function(file, action)
     if file == nil then
       return
     end
-    vim.cmd("edit " .. file)
+
+    local command = utils.command_map[action]
+    if command == nil then
+      vim.api.nvim_err_writeln("[IVY] The file action is unable the handel the action " .. action)
+      return
+    end
+
+    vim.cmd(command .. " " .. file)
   end
 end
 

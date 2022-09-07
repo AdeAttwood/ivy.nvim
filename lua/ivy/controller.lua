@@ -1,7 +1,9 @@
 local window = require "ivy.window"
 local prompt = require "ivy.prompt"
+local utils = require "ivy.utils"
 
 local controller = {}
+controller.action = utils.actions
 
 controller.items = nil
 controller.callback = nil
@@ -36,16 +38,16 @@ controller.update = function(text)
   end)
 end
 
-controller.complete = function()
+controller.complete = function(action)
   vim.api.nvim_set_current_win(window.origin)
-  controller.callback(window.get_current_selection())
+  controller.callback(window.get_current_selection(), action)
 
   controller.destroy()
 end
 
 controller.checkpoint = function()
   vim.api.nvim_set_current_win(window.origin)
-  controller.callback(window.get_current_selection())
+  controller.callback(window.get_current_selection(), controller.action.CHECKPOINT)
   vim.api.nvim_set_current_win(window.window)
 end
 
