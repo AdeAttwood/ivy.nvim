@@ -42,6 +42,11 @@ _G.it = function(name, callback)
     error = function(message)
       error(message, 2)
     end,
+    assert_equal = function(expected, actual)
+      if expected ~= actual then
+        error("Failed to assert that '" .. expected .. "' matches '" .. actual .. "'", 2)
+      end
+    end,
   }
 
   call_hook "before_each"
