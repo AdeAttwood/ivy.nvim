@@ -9,13 +9,13 @@ crate-type = ["cdylib", "rlib"]
 path = "rust/lib.rs"
 
 [dependencies]
-ignore = "0.4"
+ignore = "0.4.18"
 fuzzy-matcher = "0.3.7"
 lazy_static = "1.4.0"
 rayon = "1.5.3"
 
 [dev-dependencies]
-criterion = "0.3.6"
+criterion = "0.4.0"
 
 [profile.release]
 opt-level = 3
