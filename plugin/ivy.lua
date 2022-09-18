@@ -54,12 +54,12 @@ vim.api.nvim_create_user_command("IvyLines", function()
       local score = libivy.ivy_match(input, line)
       if score > -200 then
         local prefix = string.rep(" ", 4 - #tostring(index)) .. index .. ": "
-        table.insert(list, { score, prefix .. line })
+        table.insert(list, { score = score, content = prefix .. line })
       end
     end
 
     table.sort(list, function(a, b)
-      return a[1] < b[1]
+      return a.score < b.score
     end)
 
     return list
