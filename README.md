@@ -1,6 +1,9 @@
 <div align="center">
 
-# ivy.nvim
+<img src="assets/logo.svg" alt="ivy.vim" /> 
+
+<br />
+<br />
 
 An [ivy-mode](https://github.com/abo-abo/swiper#ivy) port to neovim. Ivy is a
 generic completion mechanism for ~~Emacs~~ Nvim
