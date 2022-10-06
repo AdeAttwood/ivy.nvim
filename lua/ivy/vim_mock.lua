@@ -4,6 +4,14 @@ local mock = {
   cursors = {},
 }
 
+mock.get_lines = function()
+  return mock.lines
+end
+
+mock.get_commands = function()
+  return mock.commands
+end
+
 mock.reset = function()
   mock.commands = {}
   mock.lines = {}
@@ -25,6 +33,7 @@ mock.reset = function()
       end,
       nvim_win_set_option = function() end,
       nvim_buf_set_option = function() end,
+      nvim_buf_set_name = function() end,
       nvim_buf_set_var = function() end,
       nvim_buf_set_keymap = function() end,
       nvim_buf_delete = function() end,
@@ -66,6 +75,9 @@ mock.reset = function()
         return lines
       end,
     },
+    schedule = function(callback)
+      callback()
+    end,
   }
 end
 
