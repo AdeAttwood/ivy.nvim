@@ -34,7 +34,12 @@ controller.update = function(text)
   vim.schedule(function()
     window.set_items(controller.items(text))
     vim.cmd "syntax clear IvyMatch"
-    vim.cmd("syntax match IvyMatch '[(" .. text .. ")]'")
+    if #text > 0 then
+      -- Escape characters so they do not throw an error when vim tries to use
+      -- the "text" as a regex
+      local escaped_text = string.gsub(text, "([-/])", "\\%1")
+      vim.cmd("syntax match IvyMatch '[" .. escaped_text .. "]'")
+    end
   end)
 end
 
