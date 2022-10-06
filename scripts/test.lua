@@ -57,14 +57,14 @@ _G.it = function(name, callback)
 
   call_hook "after_each"
 
-  local prefix = "\x1B[42mPASS"
+  local prefix = "\x1B[42m\x1B[30m PASS "
   global_context.total = global_context.total + 1
 
   if status then
     global_context.pass = global_context.pass + 1
   else
     global_context.fail = global_context.fail + 1
-    prefix = "\x1B[41mFAIL"
+    prefix = "\x1B[41m\x1B[30m FAIL "
   end
 
   print(string.format("%s\x1B[0m %s - %s (%.3f ms)", prefix, global_context.current_test_name, name, elapsed))
