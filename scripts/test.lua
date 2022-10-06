@@ -55,7 +55,7 @@ _G.it = function(name, callback)
   local status, err = pcall(callback, context)
   local elapsed = (os.clock() * 1000) - time
 
-  call_hook "before_each"
+  call_hook "after_each"
 
   local prefix = "\x1B[42mPASS"
   global_context.total = global_context.total + 1
