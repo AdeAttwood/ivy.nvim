@@ -49,19 +49,6 @@ jobs:
           version: latest
           args: --check .
 
-  clang-format:
-    name: Clang Format
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Install Dependencies
-        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y clang-format findutils
-
-      - name: Run clang format
-        run: find ./cpp -name "*.cpp" -o -name "*.hpp" | xargs clang-format -Werror --dry-run
-
   cargo-format:
     name: Cargo Format
     runs-on: ubuntu-latest
