@@ -4,7 +4,15 @@ local library_path = (function()
 end)()
 
 local ffi = require "ffi"
-local ivy_c = ffi.load(library_path)
+local ok, ivy_c = pcall(ffi.load, library_path)
+if not ok then
+  vim.api.nvim_err_writeln(
+    "libivyrs.so not found! Please ensure you have complied the shared library."
+      .. " For more info refer to the documentation, https://github.com/AdeAttwood/ivy.nvim#compiling"
+  )
+
+  return
+end
 
 ffi.cdef [[
     void ivy_init(const char*);
