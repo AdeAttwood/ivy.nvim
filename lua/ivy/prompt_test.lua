@@ -51,11 +51,44 @@ end)
 it("can delete a word", function(t)
   prompt.set "Ade Attwood"
   input { "DELETE_WORD" }
-  assert_prompt(t, "Ade")
+  assert_prompt(t, "Ade ")
 end)
 
 it("can delete a word in the middle", function(t)
   prompt.set "Ade middle A"
   input { "LEFT", "LEFT", "DELETE_WORD" }
-  assert_prompt(t, "Ade A")
+  assert_prompt(t, "Ade  A")
 end)
+
+it("will delete the space and the word if the last word is single space", function(t)
+  prompt.set "some.thing "
+  input { "DELETE_WORD" }
+  assert_prompt(t, "some.")
+end)
+
+it("will only delete one word from path", function(t)
+  prompt.set "some/nested/path"
+  input { "DELETE_WORD" }
+  assert_prompt(t, "some/nested/")
+end)
+
+it("will delete tailing space", function(t)
+  prompt.set "word                 "
+  input { "DELETE_WORD" }
+  assert_prompt(t, "")
+end)
+
+it("will leave a random space", function(t)
+  prompt.set "some word       "
+  input { "DELETE_WORD" }
+  assert_prompt(t, "some ")
+end)
+
+local special_characters = { ".", "/", "^" }
+for _, char in ipairs(special_characters) do
+  it(string.format("will stop at a %s", char), function(t)
+    prompt.set(string.format("key%sValue", char))
+    input { "DELETE_WORD" }
+    assert_prompt(t, string.format("key%s", char))
+  end)
+end
