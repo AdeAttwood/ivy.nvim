@@ -1,6 +1,23 @@
 -- The prefix that will be before the search text for the user
 local prompt_prefix = ">> "
 
+-- Gets the suffix to delete from some text biased on what happens in a bash
+-- prompt. If the text dose not end in a letter then the last word and all of
+-- the tailing special characters will be returned. If the text dose end in a
+-- letter then only the last word will be returned leaving the special
+-- characters that are before the last word. For example
+--
+-- `some word` -> `some `
+-- `some     word` -> `some     `
+-- `some word       ` -> `some `
+local function get_delete_suffix(text)
+  if text:match "([A-Za-z]+)$" == nil then
+    return text:match "([A-Za-z]+[^A-Za-z]+)$"
+  end
+
+  return text:match "([A-Za-z]+)$"
+end
+
 local prompt = {}
 
 prompt.suffix = ""
@@ -9,6 +26,7 @@ prompt.value = ""
 prompt.text = function()
   return prompt.value .. prompt.suffix
 end
+
 prompt.update = function()
   vim.api.nvim_echo({
     { prompt_prefix, "None" },
@@ -32,9 +50,12 @@ prompt.input = function(char)
       prompt.suffix = prompt.suffix:sub(2, -1)
     end
   elseif char == "DELETE_WORD" then
-    prompt.value = prompt.value:match "(.*)%s+.*$"
-    if prompt.value == nil then
+    local suffix = get_delete_suffix(prompt.value)
+
+    if suffix == nil then
       prompt.value = ""
+    else
+      prompt.value = prompt.value:sub(1, #prompt.value - #suffix)
     end
   elseif char == "\\\\" then
     prompt.value = prompt.value .. "\\"
