@@ -74,7 +74,7 @@ utils.file_action = function()
       return
     end
 
-    vim.cmd(command .. " " .. file)
+    vim.cmd(command .. " " .. utils.escape_file_name(file))
   end
 end
 
@@ -83,6 +83,10 @@ utils.line_action = function()
     local line = item:match "^%s+(%d+):"
     vim.cmd(line)
   end
+end
+
+utils.escape_file_name = function(input)
+  return string.gsub(input, "([$])", "\\%1")
 end
 
 return utils
