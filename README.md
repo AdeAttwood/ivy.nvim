@@ -52,7 +52,7 @@ A command can be run that will launch the completion UI
 
 | Command            | Key Map     | Description                                                 |
 | ------------------ | ----------- | ----------------------------------------------------------- |
-| IvyFd              | \<leader\>p | Find files in your project with the fd cli file finder      |
+| IvyFd              | \<leader\>p | Find files in your project with a custom rust file finder   |
 | IvyAg              | \<leader\>/ | Find content in files using the silver searcher             |
 | IvyBuffers         | \<leader\>b | Search though open buffers                                  |
 | IvyLines           |             | Search the lines in the current buffer                      |
