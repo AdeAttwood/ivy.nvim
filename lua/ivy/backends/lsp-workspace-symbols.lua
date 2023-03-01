@@ -30,9 +30,9 @@ local function items(input)
 end
 
 local lsp_workspace_symbols = {
-  name = "WorkspaceSymbol",
-  command = "IvyWorkspaceSymbol",
-  description = "Search for workspace ymbol using the lsp workspace/symbol",
+  name = "WorkspaceSymbols",
+  command = "IvyWorkspaceSymbols",
+  description = "Search for workspace symbols using the lsp workspace/symbol",
   items = items,
   callback = utils.vimgrep_action(),
 }
