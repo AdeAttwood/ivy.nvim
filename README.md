@@ -50,12 +50,13 @@ error: linker `cc` not found
 
 A command can be run that will launch the completion UI
 
-| Command    | Key Map     | Description                                            |
-| ---------- | ----------- | ------------------------------------------------------ |
-| IvyFd      | \<leader\>p | Find files in your project with the fd cli file finder |
-| IvyAg      | \<leader\>/ | Find content in files using the silver searcher        |
-| IvyBuffers | \<leader\>b | Search though open buffers                             |
-| IvyLines   |             | Search the lines in the current buffer                 |
+| Command            | Key Map     | Description                                                 |
+| ------------------ | ----------- | ----------------------------------------------------------- |
+| IvyFd              | \<leader\>p | Find files in your project with the fd cli file finder      |
+| IvyAg              | \<leader\>/ | Find content in files using the silver searcher             |
+| IvyBuffers         | \<leader\>b | Search though open buffers                                  |
+| IvyLines           |             | Search the lines in the current buffer                      |
+| IvyWorkspaceSymbol |             | Search for workspace symbols using the lsp workspace/symbol |
 
 ### Actions
 
