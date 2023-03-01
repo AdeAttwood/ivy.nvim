@@ -29,5 +29,6 @@ register_backend(require "ivy.backends.ag")
 register_backend(require "ivy.backends.buffers")
 register_backend(require "ivy.backends.files")
 register_backend(require "ivy.backends.lines")
+register_backend(require "ivy.backends.lsp-workspace-symbols")
 
 vim.cmd "highlight IvyMatch cterm=bold gui=bold"
