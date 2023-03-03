@@ -114,23 +114,6 @@ vertical split action it will open the buffer in a new `vsplit`
     -- the results window, The `input` will be passed in, so you can filter
     -- your results with the value from the prompt
     function(input)
-  vim.ivy.run(
-    -- The name given to the results window and displayed to the user
-    "Title",
-    -- Call back function to get all the candidates that will be displayed in
-    -- the results window, The `input` will be passed in, so you can filter
-    -- your results with the value from the prompt
-    function(input)
-      return {
-        { content = "One" },
-        { content = "Two" },
-        { content = "Three" },
-      }
-    end,
-    -- Action callback that will be called on the completion or peek actions.
-    -- The currently selected item is passed in as the result.
-    function(result) vim.cmd("edit " .. result) end
-  )
       return {
         { content = "One" },
         { content = "Two" },
