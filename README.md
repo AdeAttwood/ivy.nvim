@@ -44,6 +44,16 @@ error: linker `cc` not found
   = note: No such file or directory (os error 2)
 ```
 
+To configure auto compiling you can use the [`post-merge`](./post-merge.sample)
+git hook to compile the library automatically when you update the package. This
+works well if you are managing your plugins via git. For an example
+installation you can run the following command. **NOTE:** This will overwrite
+any post-merge hooks you have already installed.
+
+```sh
+cp ./post-merge.sample ./.git/hooks/post-merge
+```
+
 ## Features
 
 ### Commands

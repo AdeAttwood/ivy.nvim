@@ -1,0 +1,5 @@
+#! /bin/bash
+
+# Automatically compile libivy.so when we pull down the repo.
+# https://github.com/AdeAttwood/ivy.nvim#compiling
+cargo build --release
