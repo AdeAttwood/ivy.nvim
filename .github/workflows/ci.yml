@@ -5,20 +5,6 @@ on:
   pull_request: { branches: ["0.x"] }
 
 jobs:
-  commits:
-    name: Commitlint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 1000
-
-      - name: Lint commits
-        uses: docker://registry.k1.zportal.co.uk/practically-oss/conventional-tools:0.x
-        with:
-          args: conventional-tools commitlint -l1 -f39febd82e236a9c79f5b408e98cbd20410f11e9e
-
   luacheck:
     name: Luacheck
     runs-on: ubuntu-latest
