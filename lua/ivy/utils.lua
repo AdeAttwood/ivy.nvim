@@ -17,6 +17,13 @@ utils.command_map = {
   [utils.actions.SPLIT] = "split",
 }
 
+utils.existing_command_map = {
+  [utils.actions.EDIT] = "buffer",
+  [utils.actions.CHECKPOINT] = "buffer",
+  [utils.actions.VSPLIT] = "vsplit | buffer",
+  [utils.actions.SPLIT] = "split | buffer",
+}
+
 utils.command_finder = function(command, min)
   if min == nil then
     min = 3
@@ -68,7 +75,14 @@ utils.file_action = function()
       return
     end
 
-    local command = utils.command_map[action]
+    local buffer_number = vim.fn.bufnr(file)
+    local command
+    if buffer_number > -1 then
+      command = utils.existing_command_map[action]
+    else
+      command = utils.command_map[action]
+    end
+
     if command == nil then
       vim.api.nvim_err_writeln("[IVY] The file action is unable the handel the action " .. action)
       return
