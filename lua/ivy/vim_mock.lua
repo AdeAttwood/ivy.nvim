@@ -75,6 +75,11 @@ mock.reset = function()
         return lines
       end,
     },
+    fn = {
+      bufnr = function()
+        return -1
+      end,
+    },
     schedule = function(callback)
       callback()
     end,
