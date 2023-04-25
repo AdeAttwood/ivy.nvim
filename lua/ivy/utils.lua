@@ -37,10 +37,14 @@ utils.command_finder = function(command, min)
     if handle == nil then
       return {}
     end
-    local result = handle:read "*a"
-    handle:close()
 
-    return result
+    local results = {};
+    for line in handle:lines() do
+      table.insert(results, { content = line })
+    end
+
+    handle:close()
+    return results
   end
 end
 
