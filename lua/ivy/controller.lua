@@ -37,7 +37,7 @@ controller.update = function(text)
     if #text > 0 then
       -- Escape characters so they do not throw an error when vim tries to use
       -- the "text" as a regex
-      local escaped_text = string.gsub(text, "([-/])", "\\%1")
+      local escaped_text = string.gsub(text, "([-/\\])", "\\%1")
       vim.cmd("syntax match IvyMatch '[" .. escaped_text .. "]'")
     end
   end)
