@@ -33,7 +33,7 @@ utils.command_finder = function(command, min)
     -- TODO(ade): Think if we want to start escaping the command here. I
     -- dont know if its causing issues while trying to use regex especially
     -- with word boundaries `input:gsub("'", "\\'"):gsub('"', '\\"')`
-    local handle = io.popen(command .. " " .. input .. " 2>&1")
+    local handle = io.popen(command .. " " .. input .. " 2>&1 || true")
     if handle == nil then
       return {}
     end
