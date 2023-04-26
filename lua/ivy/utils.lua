@@ -38,7 +38,7 @@ utils.command_finder = function(command, min)
       return {}
     end
 
-    local results = {};
+    local results = {}
     for line in handle:lines() do
       table.insert(results, { content = line })
     end
