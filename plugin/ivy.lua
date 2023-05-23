@@ -31,4 +31,10 @@ register_backend(require "ivy.backends.files")
 register_backend(require "ivy.backends.lines")
 register_backend(require "ivy.backends.lsp-workspace-symbols")
 
+if vim.fn.executable "rg" then
+  register_backend(require "ivy.backends.rg")
+elseif vim.fn.executable "ag" then
+  register_backend(require "ivy.backends.ag")
+end
+
 vim.cmd "highlight IvyMatch cterm=bold gui=bold"
