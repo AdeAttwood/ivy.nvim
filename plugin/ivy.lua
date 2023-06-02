@@ -25,7 +25,17 @@ local register_backend = function(backend)
   end
 end
 
-register_backend(require "ivy.backends.ag")
+vim.paste = (function(overridden)
+  return function(lines, phase)
+    local file_type = vim.api.nvim_buf_get_option(0, "filetype")
+    if file_type == "ivy" then
+      vim.ivy.paste()
+    else
+      overridden(lines, phase)
+    end
+  end
+end)(vim.paste)
+
 register_backend(require "ivy.backends.buffers")
 register_backend(require "ivy.backends.files")
 register_backend(require "ivy.backends.lines")
