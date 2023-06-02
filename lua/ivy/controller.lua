@@ -30,6 +30,10 @@ controller.search = function(value)
   controller.update(prompt.text())
 end
 
+controller.paste = function()
+  controller.search(prompt.text() .. vim.fn.getreg "+p")
+end
+
 controller.update = function(text)
   vim.schedule(function()
     window.set_items(controller.items(text))
