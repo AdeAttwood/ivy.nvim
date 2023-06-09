@@ -1,6 +1,7 @@
 local library_path = (function()
-  local dirname = string.sub(debug.getinfo(1).source, 2, #"/fzf_lib.lua" * -1)
-  return dirname .. "/../../target/release/libivyrs.so"
+  local root = string.sub(debug.getinfo(1).source, 2, #"/libivy.lua" * -1)
+  local release_path = root .. "../../target/release"
+  return package.searchpath("libivyrs", release_path .. "/?.so;" .. release_path .. "/?.dylib;")
 end)()
 
 local ffi = require "ffi"
