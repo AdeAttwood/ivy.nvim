@@ -21,6 +21,22 @@ local function string_to_table(lines)
   return matches
 end
 
+local function get_items_length(items)
+  local mt = getmetatable(items)
+  if mt ~= nil and mt.__len ~= nil then
+    return mt.__len(items)
+  end
+
+  return #items
+end
+
+local function call_gc(items)
+  local mt = getmetatable(items)
+  if mt ~= nil and mt.__gc ~= nil then
+    return mt.__gc(items)
+  end
+end
+
 local window = {}
 
 window.index = 0
@@ -106,15 +122,17 @@ window.set_items = function(items)
     items = string_to_table(items)
   end
 
+  local items_length = get_items_length(items)
+
   -- TODO(ade): Validate the items are in the correct format. This also need to
   -- come with some descriptive messages and possible help.
 
   -- Display no items text if there are no items to dispaly
-  if #items == 0 then
+  if items_length == 0 then
+    items_length = 1
     items = { { content = "-- No Items --" } }
   end
 
-  local items_length = #items
   window.index = items_length - 1
 
   for index = 1, items_length do
@@ -130,6 +148,8 @@ window.set_items = function(items)
 
   vim.api.nvim_win_set_height(window.window, line_count)
   window.update()
+
+  call_gc(items)
 end
 
 window.destroy = function()
