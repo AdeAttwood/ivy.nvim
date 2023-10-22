@@ -7,12 +7,24 @@ use std::ffi::CStr;
 use std::ffi::CString;
 use std::os::raw::{c_char, c_int};
 use std::sync::Mutex;
+use std::sync::OnceLock;
 
-#[macro_use]
-extern crate lazy_static;
+struct Ivy {
+    pub file_cache: HashMap<String, Vec<String>>,
+}
 
-lazy_static! {
-    static ref GLOBAL_FILE_CACHE: Mutex<HashMap<String, Vec<String>>> = Mutex::new(HashMap::new());
+static INSTANCE: OnceLock<Mutex<Ivy>> = OnceLock::new();
+
+impl Ivy {
+    pub fn new() -> Self {
+        Self {
+            file_cache: HashMap::new(),
+        }
+    }
+
+    pub fn global() -> &'static Mutex<Ivy> {
+        INSTANCE.get_or_init(|| Mutex::new(Ivy::new()))
+    }
 }
 
 fn to_string(input: *const c_char) -> String {
@@ -23,15 +35,17 @@ fn to_string(input: *const c_char) -> String {
 }
 
 fn get_files(directory: &String) -> Vec<String> {
-    let mut cache = GLOBAL_FILE_CACHE.lock().unwrap();
-    if !cache.contains_key(directory) {
+    let mut ivy = Ivy::global().lock().unwrap();
+    if !ivy.file_cache.contains_key(directory) {
         let finder_options = finder::Options {
             directory: directory.clone(),
         };
-        cache.insert(directory.clone(), finder::find_files(finder_options));
+
+        ivy.file_cache
+            .insert(directory.clone(), finder::find_files(finder_options));
     }
 
-    return cache.get(directory).unwrap().to_vec();
+    return ivy.file_cache.get(directory).unwrap().to_vec();
 }
 
 #[no_mangle]
