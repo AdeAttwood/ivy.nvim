@@ -341,7 +341,6 @@ dependencies = [
  "criterion",
  "fuzzy-matcher",
  "ignore",
- "lazy_static",
  "rayon",
 ]
 
