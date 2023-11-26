@@ -9,7 +9,7 @@ crate-type = ["cdylib", "rlib"]
 path = "rust/lib.rs"
 
 [dependencies]
-ignore = "0.4.20"
+ignore = "0.4.21"
 fuzzy-matcher = "0.3.7"
 rayon = "1.8.0"
 
