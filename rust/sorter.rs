@@ -25,12 +25,19 @@ pub fn sort_strings(options: Options, strings: Vec<String>) -> Vec<Match> {
 
     let mut matches = strings
         .into_par_iter()
-        .map(|candidate| Match {
-            score: matcher.score(candidate.as_str()),
-            content: candidate,
+        .filter_map(|candidate| {
+            let score = matcher.score(candidate.as_str());
+            if score < options.minimum_score {
+                None
+            } else {
+                Some(Match {
+                    score,
+                    content: candidate,
+                })
+            }
         })
-        .filter(|m| m.score > options.minimum_score)
         .collect::<Vec<Match>>();
+
     matches.par_sort_unstable_by(|a, b| a.score.cmp(&b.score));
     matches
 }
