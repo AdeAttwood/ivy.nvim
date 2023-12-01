@@ -1,0 +1,24 @@
+#!/bin/bash
+
+target_rev="$(git rev-parse $1)"
+current_rev="$(git rev-parse HEAD)"
+
+current_branch="$(git rev-parse --abbrev-ref HEAD)"
+trap "git checkout "$current_branch"" EXIT
+
+hyperfine \
+  --style full \
+  --warmup 3 \
+  --export-json /tmp/bench.json \
+  --parameter-list rev "${target_rev},${current_rev}"  \
+  --prepare "git checkout {rev} && cargo build --release" -n '{rev}' 'luajit ./scripts/benchmark.lua'
+
+old_value=$(cat /tmp/bench.json | jq '.results[0].mean')
+new_value=$(cat /tmp/bench.json | jq '.results[1].mean')
+percentage_difference=$(echo "scale=2; (($new_value - $old_value) / $old_value) * 100" | bc)
+
+echo ""
+echo "-------------------------------------"
+echo "The percentage difference is $percentage_difference%"
+echo "-------------------------------------"
+echo ""
