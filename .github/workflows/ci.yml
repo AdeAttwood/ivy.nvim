@@ -42,11 +42,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Run cargo format
-        uses: actions-rs/cargo@v1
+      - name: Set up rust
+        uses: dtolnay/rust-toolchain@stable
         with:
-          command: fmt
-          args: --all -- --check
+          components: rustfmt
+
+      - name: Lint
+        run: cargo fmt --check
 
   test:
     name: Build and test
@@ -55,10 +57,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install rust toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
+      - name: Set up rust
+        uses: dtolnay/rust-toolchain@stable
 
       - name: Install dependencies
         run: sudo apt update && sudo apt install -y luajit build-essential
