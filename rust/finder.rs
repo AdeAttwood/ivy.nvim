@@ -10,7 +10,11 @@ pub fn find_files(options: Options) -> Vec<String> {
     let base_path = &fs::canonicalize(options.directory).unwrap();
 
     let mut builder = WalkBuilder::new(base_path);
+    // Search for hidden files and directories
     builder.hidden(false);
+    // Don't require a git repo to use .gitignore files. We want to use the .gitignore files
+    // wherever we are
+    builder.require_git(false);
 
     // TODO(ade): Remove unwraps and find a good way to get the errors into the UI. Currently there
     // is no way to handel errors in the rust library
