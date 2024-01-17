@@ -20,6 +20,7 @@ pub fn find_files(options: Options) -> Vec<String> {
     // is no way to handel errors in the rust library
     let mut override_builder = OverrideBuilder::new("");
     override_builder.add("!.git").unwrap();
+    override_builder.add("!.sl").unwrap();
 
     let overrides = override_builder.build().unwrap();
     builder.overrides(overrides);
