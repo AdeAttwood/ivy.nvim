@@ -104,7 +104,8 @@ utils.line_action = function()
 end
 
 utils.escape_file_name = function(input)
-  return string.gsub(input, "([$])", "\\%1")
+  local file, _ = string.gsub(input, "([$%]\\[])", "\\%1")
+  return file
 end
 
 return utils
