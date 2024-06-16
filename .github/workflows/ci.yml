@@ -61,10 +61,28 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
 
       - name: Install dependencies
-        run: sudo apt update && sudo apt install -y luajit build-essential
+        run: sudo apt update && sudo apt install -y luajit build-essential luarocks
+
+      - name: Install busted
+        run: sudo luarocks install busted
+
+      - name: Install neovim
+        run: |
+          test -d _neovim || {
+            mkdir -p _neovim
+            curl -sL "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux64.tar.gz" | tar xzf - --strip-components=1 -C "${PWD}/_neovim"
+          }
 
       - name: Build
         run: cargo build --release
 
       - name: Test
         run: find lua -name "*_test.lua" | xargs luajit scripts/test.lua
+
+      - name: Run tests
+        run: |
+          export PATH="${PWD}/_neovim/bin:${PATH}"
+          export VIM="${PWD}/_neovim/share/nvim/runtime"
+
+          nvim --version
+          nvim -l ./scripts/busted.lua ./lua
