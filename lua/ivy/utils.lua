@@ -99,7 +99,9 @@ end
 utils.line_action = function()
   return function(item)
     local line = item:match "^%s+(%d+):"
-    vim.cmd(line)
+    if line ~= nil then
+      vim.cmd(line)
+    end
   end
 end
 

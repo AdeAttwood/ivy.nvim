@@ -10,9 +10,12 @@ self = false
 read_globals = {
   "vim",
 
-  "it",
   "after",
   "after_each",
+  "assert",
   "before",
   "before_each",
+  "describe",
+  "it",
+  "spy",
 }
