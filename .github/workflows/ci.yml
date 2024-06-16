@@ -61,7 +61,7 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
 
       - name: Install dependencies
-        run: sudo apt update && sudo apt install -y luajit build-essential luarocks
+        run: sudo apt update && sudo apt install -y build-essential luarocks
 
       - name: Install busted
         run: sudo luarocks install busted
@@ -75,9 +75,6 @@ jobs:
 
       - name: Build
         run: cargo build --release
-
-      - name: Test
-        run: find lua -name "*_test.lua" | xargs luajit scripts/test.lua
 
       - name: Run tests
         run: |
