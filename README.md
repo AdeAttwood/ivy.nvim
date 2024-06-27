@@ -83,7 +83,6 @@ Action can be run on selected candidates provide functionality
 | Action         | Key Map     | Description                                                                    |
 | -------------- | ----------- | ------------------------------------------------------------------------------ |
 | Complete       | \<CR\>      |Run the completion function, usually this will be opening a file               |
-| Peek           | not implemented yet |Run the completion function on a selection, but don't close the results window |
 | Vertical Split | \<C-v\>     |Run the completion function in a new vertical split                            |
 | Split          | \<C-s\>     |Run the completion function in a new split                                     |
 | Destroy        | \<C-c\>     |Close the results window                                                       |
@@ -153,7 +152,7 @@ vertical split action it will open the buffer in a new `vsplit`
         { content = "Three" },
       }
     end,
-    -- Action callback that will be called on the completion or peek actions.
+    -- Action callback that will be called on the completion or checkpoint actions.
     -- The currently selected item is passed in as the result.
     function(result) vim.cmd("edit " .. result) end
   )
