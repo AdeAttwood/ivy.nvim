@@ -30,6 +30,38 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim)
 
 TODO: Add more plugin managers
 
+### Setup / Configuration
+
+Ivy can be configured with minimal config that will give you all the defaults
+provided by Ivy.
+
+```lua
+require('ivy').setup()
+```
+
+With Ivy you can configure your own backends.
+
+```lua
+require('ivy').setup {
+  backends = {
+    -- A backend module that will be registered
+    "ivy.backends.buffers",
+    -- Using a table so you can configure a custom keymap overriding the
+    -- default one.
+    { "ivy.backends.files", { keymap = "<C-p>" } }
+  },
+}
+```
+
+The `setup` function can only be called once, if its called a second time any
+backends or config will not be used. Ivy does expose the `register_backend`
+function, this can be used to load backends before or after the setup function
+is called.
+
+```lua
+require('ivy').register_backend("ivy.backends.files")
+```
+
 ### Compiling
 
 For the native searching, you will need to compile the shard library. You can
@@ -64,17 +96,21 @@ cp ./post-merge.sample ./.git/hooks/post-merge
 
 ## Features
 
-### Commands
+### Backends
 
-A command can be run that will launch the completion UI
+A backend is a module that will provide completion candidates for the UI to
+show. It will also provide functionality when actions are taken. The Command
+and Key Map are the default options provided by the backend, they can be
+customized when you register it.
 
-| Command            | Key Map     | Description                                                 |
-| ------------------ | ----------- | ----------------------------------------------------------- |
-| IvyFd              | \<leader\>p | Find files in your project with a custom rust file finder   |
-| IvyAg              | \<leader\>/ | Find content in files using the silver searcher             |
-| IvyBuffers         | \<leader\>b | Search though open buffers                                  |
-| IvyLines           |             | Search the lines in the current buffer                      |
-| IvyWorkspaceSymbol |             | Search for workspace symbols using the lsp workspace/symbol |
+| Module                               | Command            | Key Map     | Description                                                 |
+| ------------------------------------ | ------------------ | ----------- | ----------------------------------------------------------- |
+| `ivy.backends.files`                 | IvyFd              | \<leader\>p | Find files in your project with a custom rust file finder   |
+| `ivy.backends.ag`                    | IvyAg              | \<leader\>/ | Find content in files using the silver searcher             |
+| `ivy.backends.rg`                    | IvyRg              | \<leader\>/ | Find content in files using ripgrep cli tool                |
+| `ivy.backends.buffers`               | IvyBuffers         | \<leader\>b | Search though open buffers                                  |
+| `ivy.backends.lines`                 | IvyLines           |             | Search the lines in the current buffer                      |
+| `ivy.backends.lsp-workspace-symbols` | IvyWorkspaceSymbol |             | Search for workspace symbols using the lsp workspace/symbol |
 
 ### Actions
 
