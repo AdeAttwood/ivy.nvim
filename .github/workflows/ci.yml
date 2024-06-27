@@ -82,4 +82,4 @@ jobs:
           export VIM="${PWD}/_neovim/share/nvim/runtime"
 
           nvim --version
-          nvim -l ./scripts/busted.lua ./lua
+          nvim -l ./scripts/busted.lua -o TAP ./lua/ivy/ 2> /dev/null
