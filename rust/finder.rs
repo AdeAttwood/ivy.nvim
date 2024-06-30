@@ -26,7 +26,11 @@ pub fn find_files(options: Options) -> Vec<String> {
     builder.overrides(overrides);
 
     for result in builder.build() {
-        let absolute_candidate = result.unwrap();
+        let absolute_candidate = match result {
+            Ok(absolute_candidate) => absolute_candidate,
+            Err(..) => continue,
+        };
+
         let candidate_path = absolute_candidate.path().strip_prefix(base_path).unwrap();
         if candidate_path.is_dir() {
             continue;
