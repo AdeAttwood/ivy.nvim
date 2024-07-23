@@ -1,7 +1,11 @@
 local library_path = (function()
   local root = string.sub(debug.getinfo(1).source, 2, #"/libivy.lua" * -1)
   local release_path = root .. "../../target/release"
-  return package.searchpath("libivyrs", release_path .. "/?.so;" .. release_path .. "/?.dylib;")
+  if vim.uv.os_uname().sysname == "Windows_NT" then
+    return package.searchpath("ivyrs", release_path .. "/?.dll;")
+  else
+    return package.searchpath("libivyrs", release_path .. "/?.so;" .. release_path .. "/?.dylib;")
+  end
 end)()
 
 local ffi = require "ffi"
