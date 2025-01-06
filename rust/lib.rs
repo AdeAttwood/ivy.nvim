@@ -107,7 +107,7 @@ pub extern "C" fn ivy_files_iter(c_pattern: *const c_char, c_base_dir: *const c_
     let sorter_options = sorter::Options::new(pattern);
     let matches = sorter::sort_strings(sorter_options, files)
         .into_iter()
-        .map(|m| CString::new(m.content.as_str()).unwrap())
+        .map(|m| CString::new(m.content).unwrap())
         .collect::<Vec<CString>>();
 
     ivy.iter_sequence += 1;

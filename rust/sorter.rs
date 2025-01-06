@@ -1,5 +1,6 @@
 use super::matcher;
 use rayon::prelude::*;
+use std::collections::BinaryHeap;
 
 pub struct Match {
     pub score: i64,
@@ -23,7 +24,7 @@ impl Options {
 pub fn sort_strings(options: Options, strings: Vec<String>) -> Vec<Match> {
     let matcher = matcher::Matcher::new(options.pattern);
 
-    let mut matches = strings
+    let matches = strings
         .into_par_iter()
         .filter_map(|candidate| {
             let score = matcher.score(candidate.as_str());
@@ -36,8 +37,7 @@ pub fn sort_strings(options: Options, strings: Vec<String>) -> Vec<Match> {
                 })
             }
         })
-        .collect::<Vec<Match>>();
+        .collect::<BinaryHeap<Match>>();
 
-    matches.par_sort_unstable_by(|a, b| a.score.cmp(&b.score));
-    matches
+    matches.into_sorted_vec()
 }
