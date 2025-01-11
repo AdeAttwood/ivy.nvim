@@ -79,6 +79,14 @@ controller.previous = function()
 end
 
 controller.origin = function()
+  return controller.origin_window()
+end
+
+controller.origin_window = function()
+  return window.origin
+end
+
+controller.origin_buffer = function()
   return vim.api.nvim_win_get_buf(window.origin)
 end
 
