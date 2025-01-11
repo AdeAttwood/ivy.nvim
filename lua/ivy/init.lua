@@ -22,6 +22,8 @@ ivy.input = controller.input
 ivy.next = controller.next
 ivy.previous = controller.previous
 ivy.search = controller.search
+ivy.origin_buffer = controller.origin_buffer
+ivy.origin_window = controller.origin_window
 
 -- Private variable to check if ivy has been setup, this is to prevent multiple
 -- setups of ivy. This is only exposed for testing purposes.

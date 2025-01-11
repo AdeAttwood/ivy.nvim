@@ -8,7 +8,7 @@ local function set_items(items)
 end
 
 local function items(input)
-  local buffer_number = window.origin_buffer
+  local buffer_number = vim.ivy.origin_buffer()
   local cwd = vim.fn.getcwd()
   local results = {}
   vim.lsp.buf_request(buffer_number, "workspace/symbol", { query = input }, function(err, server_result, _, _)
