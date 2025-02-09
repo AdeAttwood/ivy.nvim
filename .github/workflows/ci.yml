@@ -50,7 +50,7 @@ jobs:
     name: Build and test
     strategy:
       matrix:
-        nvim-version: ["v0.9.5", "stable", "nightly"]
+        download: ["v0.9.5/nvim-linux64.tar.gz", "stable/nvim-linux-x86_64.tar.gz", "nightly/nvim-linux-x86_64.tar.gz"]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -69,7 +69,7 @@ jobs:
         run: |
           test -d _neovim || {
             mkdir -p _neovim
-            curl -sL "https://github.com/neovim/neovim/releases/download/${{ matrix.nvim-version }}/nvim-linux64.tar.gz" | tar xzf - --strip-components=1 -C "${PWD}/_neovim"
+            curl -sL "https://github.com/neovim/neovim/releases/download/${{ matrix.download }}" | tar xzf - --strip-components=1 -C "${PWD}/_neovim"
           }
 
       - name: Build
