@@ -57,6 +57,18 @@ local callbacks = {
   delete_word = "<cmd>lua vim.ivy.input('DELETE_WORD')<CR>",
 }
 
+local function get_mapping_function(key)
+  if type(key) == "function" then
+    return key
+  end
+
+  if callbacks[key] == nil then
+    error("The mapping '" .. key .. "' is not a valid ivy callback")
+  end
+
+  return callbacks[key]
+end
+
 local window = {}
 
 window.index = 0
@@ -96,11 +108,8 @@ window.make_buffer = function()
   local mappings = config:get { "mappings" }
   assert(mappings, "The mappings key is missing from the config, something has gone horribly wrong")
   for key, value in pairs(mappings) do
-    if callbacks[value] == nil then
-      error("The mapping '" .. value .. "' is not a valid ivy callback")
-    end
-
-    vim.api.nvim_buf_set_keymap(window.buffer, "n", key, callbacks[value], opts)
+    local callback = get_mapping_function(value)
+    vim.keymap.set({ "n" }, key, callback, vim.tbl_extend("force", opts, { buffer = window.buffer }))
   end
 end
 
