@@ -154,6 +154,7 @@ customized when you register it.
 | `ivy.backends.buffers`               | IvyBuffers         | \<leader\>b     | Search though open buffers                                  |
 | `ivy.backends.lines`                 | IvyLines           |                 | Search the lines in the current buffer                      |
 | `ivy.backends.lsp-workspace-symbols` | IvyWorkspaceSymbol |                 | Search for workspace symbols using the lsp workspace/symbol |
+| `ivy.backends.cmd-history`           | IvyCmdHistory      | \<c-r\>         | Search though your command history                          |
 
 ### Actions
 
