@@ -11,7 +11,7 @@ jobs:
     container: practically/conventional-tools:1.x@sha256:a3e98697743d8801c694b92553da733aff0fbae6bf92876b13c92343a569f049
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with: {fetch-depth: 1000}
 
       - name: Git safe.directory
