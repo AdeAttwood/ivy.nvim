@@ -75,6 +75,9 @@ window.index = 0
 window.origin = nil
 window.window = nil
 window.buffer = nil
+window.lines = nil
+window.items_length = 0
+window.offset = 0
 
 window.initialize = function()
   window.make_buffer()
@@ -114,6 +117,10 @@ window.make_buffer = function()
 end
 
 window.get_current_selection = function()
+  if window.lines ~= nil then
+    return window.lines[window.index + 1] or ""
+  end
+
   local line = vim.api.nvim_buf_get_lines(window.buffer, window.index, window.index + 1, true)
   if line == nil then
     line = { "" }
@@ -131,7 +138,31 @@ window.get_buffer = function()
 end
 
 window.update = function()
-  vim.api.nvim_win_set_cursor(window.window, { window.index + 1, 0 })
+  if window.lines == nil then
+    vim.api.nvim_win_set_cursor(window.window, { window.index + 1, 0 })
+    return
+  end
+
+  local line_count = window.items_length
+  if line_count > 10 then
+    line_count = 10
+  end
+
+  if window.index < window.offset then
+    window.offset = window.index
+  end
+  if window.index >= window.offset + line_count then
+    window.offset = window.index - line_count + 1
+  end
+
+  local lines = {}
+  for index = 1, line_count do
+    lines[index] = window.lines[window.offset + index]
+  end
+
+  vim.api.nvim_buf_set_lines(window.buffer, 0, -1, false, lines)
+  vim.api.nvim_win_set_height(window.window, line_count)
+  vim.api.nvim_win_set_cursor(window.window, { window.index - window.offset + 1, 0 })
 end
 
 window.set_items = function(items)
@@ -156,16 +187,14 @@ window.set_items = function(items)
   for index = 1, items_length do
     lines[index] = items[index].content
   end
-  vim.api.nvim_buf_set_lines(window.buffer, 0, -1, false, lines)
 
-  -- Limit the results window size to 10 so when there are lots of results the
-  -- window does not take up the hole terminal
-  local line_count = items_length
-  if line_count > 10 then
-    line_count = 10
+  window.lines = lines
+  window.items_length = items_length
+  window.offset = items_length - 10
+  if window.offset < 0 then
+    window.offset = 0
   end
 
-  vim.api.nvim_win_set_height(window.window, line_count)
   window.update()
 
   call_gc(items)
@@ -180,6 +209,9 @@ window.destroy = function()
   window.window = nil
   window.origin = nil
   window.index = 0
+  window.lines = nil
+  window.items_length = 0
+  window.offset = 0
 end
 
 return window

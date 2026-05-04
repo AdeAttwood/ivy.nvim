@@ -60,7 +60,10 @@ controller.checkpoint = function()
 end
 
 controller.next = function()
-  local max = vim.api.nvim_buf_line_count(window.buffer) - 1
+  local max = window.items_length - 1
+  if max < 0 then
+    max = vim.api.nvim_buf_line_count(window.buffer) - 1
+  end
   if window.index == max then
     return
   end
