@@ -1,9 +1,9 @@
 use super::matcher;
 use rayon::prelude::*;
 
-pub struct Match {
+pub struct Match<'a> {
     pub score: i64,
-    pub content: String,
+    pub content: &'a str,
 }
 
 pub struct Options {
@@ -20,11 +20,11 @@ impl Options {
     }
 }
 
-pub fn sort_strings(options: Options, strings: Vec<String>) -> Vec<Match> {
+pub fn sort_strings(options: Options, strings: &[String]) -> Vec<Match<'_>> {
     let matcher = matcher::Matcher::new(options.pattern);
 
     let mut matches = strings
-        .into_par_iter()
+        .par_iter()
         .filter_map(|candidate| {
             let score = matcher.score(candidate.as_str());
             if score < options.minimum_score {
@@ -32,7 +32,7 @@ pub fn sort_strings(options: Options, strings: Vec<String>) -> Vec<Match> {
             } else {
                 Some(Match {
                     score,
-                    content: candidate,
+                    content: candidate.as_str(),
                 })
             }
         })
