@@ -20,7 +20,7 @@ describe("backends/lines", function()
     })
 
     vim.cmd "IvyLines"
-    vim.wait(0)
+    vim.wait(1)
   end)
 
   after_each(function()
@@ -40,7 +40,7 @@ describe("backends/lines", function()
 
   it("will sort the buffer when there is a selection", function()
     vim.ivy.search "three"
-    vim.wait(0)
+    vim.wait(1)
 
     local lines = vim.api.nvim_buf_get_lines(window.buffer, 0, -1, false)
     assert.is_equal(#lines, 3)

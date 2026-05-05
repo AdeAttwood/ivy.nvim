@@ -19,7 +19,7 @@ describe("controller", function()
     end)
 
     -- Run all the scheduled tasks
-    vim.wait(0)
+    vim.wait(1)
 
     local lines = vim.api.nvim_buf_get_lines(0, 0, -1, true)
     assert.is_equal(#lines, 1)
@@ -35,7 +35,7 @@ describe("controller", function()
 
     controller.update ""
 
-    vim.wait(0)
+    vim.wait(1)
 
     assert.spy(vim.cmd).was_called_with "syntax clear IvyMatch"
     assert.spy(vim.cmd).was_not_called_with "syntax match IvyMatch '[H]'"
@@ -50,7 +50,7 @@ describe("controller", function()
 
     controller.update "some-file"
 
-    vim.wait(0)
+    vim.wait(1)
 
     assert.spy(vim.cmd).was_called_with "syntax match IvyMatch '[some\\-file]'"
   end)
