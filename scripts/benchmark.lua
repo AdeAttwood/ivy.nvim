@@ -1,6 +1,5 @@
 package.path = "lua/?.lua;" .. package.path
 local libivy = require "ivy.libivy"
-local vim_mock = require "ivy.vim_mock"
 local window = require "ivy.window"
 
 local benchmark = function(name, n, callback)
@@ -48,13 +47,6 @@ libivy.ivy_init "/tmp/ivy-trees/kubernetes"
 benchmark("ivy_files(kubernetes) 100x", 100, function()
   libivy.ivy_files("file.go", "/tmp/ivy-trees/kubernetes")
 end)
-
--- Mock the vim API so we can run `vim.` functions. Override the
--- `nvim_buf_set_lines` function, this is so very slow. It saves all of the
--- lines so we can assert on them in the tests. For benchmarking we don't need
--- any of this, we can't control the vim internals.
-vim_mock.reset()
-_G.vim.api.nvim_buf_set_lines = function() end
 
 window.initialize()
 
