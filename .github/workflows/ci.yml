@@ -50,7 +50,12 @@ jobs:
     name: Build and test
     strategy:
       matrix:
-        download: ["v0.9.5/nvim-linux64.tar.gz", "stable/nvim-linux-x86_64.tar.gz", "nightly/nvim-linux-x86_64.tar.gz"]
+        download:
+          - "v0.9.5/nvim-linux64.tar.gz"
+          - "v0.10.4/nvim-linux-x86_64.tar.gz"
+          - "v0.11.7/nvim-linux-x86_64.tar.gz"
+          - "stable/nvim-linux-x86_64.tar.gz"
+          - "nightly/nvim-linux-x86_64.tar.gz"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
