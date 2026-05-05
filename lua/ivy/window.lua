@@ -152,9 +152,11 @@ window.set_items = function(items)
 
   window.index = items_length - 1
 
+  local lines = {}
   for index = 1, items_length do
-    vim.api.nvim_buf_set_lines(window.buffer, index - 1, -1, false, { items[index].content })
+    lines[index] = items[index].content
   end
+  vim.api.nvim_buf_set_lines(window.buffer, 0, -1, false, lines)
 
   -- Limit the results window size to 10 so when there are lots of results the
   -- window does not take up the hole terminal
