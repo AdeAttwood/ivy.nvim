@@ -67,7 +67,7 @@ describe("window", function()
 
     vim.cmd "IvyLines"
 
-    vim.wait(0)
+    vim.wait(1)
 
     -- Trigger the mapping
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-1>", true, false, true), "x", true)
