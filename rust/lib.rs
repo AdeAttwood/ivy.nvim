@@ -97,18 +97,28 @@ pub extern "C" fn ivy_files_iter(c_pattern: *const c_char, c_base_dir: *const c_
     let directory = to_string(c_base_dir);
     let pattern = to_string(c_pattern);
 
-    let files = get_files(&directory);
-
     let mut ivy = Ivy::global().lock().unwrap();
+
+    if !ivy.file_cache.contains_key(&directory) {
+        let finder_options = finder::Options {
+            directory: directory.clone(),
+        };
+
+        ivy.file_cache
+            .insert(directory.clone(), finder::find_files(finder_options));
+    }
 
     // Convert the matches into CStrings so we can pass the pointers out while still maintaining
     // ownership. If we didn't do this the CString would be dropped and the pointer would be freed
     // while its being used externally.
     let sorter_options = sorter::Options::new(pattern);
-    let matches = sorter::sort_strings(sorter_options, files)
-        .into_iter()
-        .map(|m| CString::new(m.content.as_str()).unwrap())
-        .collect::<Vec<CString>>();
+    let matches = {
+        let files = ivy.file_cache.get(&directory).unwrap();
+        sorter::sort_strings(sorter_options, files)
+            .into_iter()
+            .map(|m| CString::new(m.content).unwrap())
+            .collect::<Vec<CString>>()
+    };
 
     ivy.iter_sequence += 1;
     let new_sequence = ivy.iter_sequence;
@@ -169,7 +179,7 @@ pub fn inner_files(pattern: String, base_dir: String) -> String {
 
     let sorter_options = sorter::Options::new(pattern);
 
-    let files = sorter::sort_strings(sorter_options, files);
+    let files = sorter::sort_strings(sorter_options, &files);
     for file in files.iter() {
         output.push_str(&file.content);
         output.push('\n');
